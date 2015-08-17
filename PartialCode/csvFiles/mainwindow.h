@@ -32,6 +32,8 @@ private slots:
 
     void getInfo( QFileInfo filename );
 
+    void on_pushButton_GenerateMatlabInput_clicked();
+
 private:
     Ui::MainWindow *ui;
 

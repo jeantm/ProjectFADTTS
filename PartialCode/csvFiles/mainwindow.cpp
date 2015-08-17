@@ -15,14 +15,21 @@ MainWindow::~MainWindow()
 
 void MainWindow::on_pushButton_Load_clicked()
 {
-    QString path = "/home/";
-    QString filePath = QFileDialog::getOpenFileName (this, "Open CSV file", path, "CSV (*.csv)");
+    QString defaultPath = "/work/jeantm/FADTTS/Project/DataTest";
+    QString filePath;
+    if( ui->lineEdit_Filename->text().compare("path/filename.csv") == 0 )
+    {
+        filePath = QFileDialog::getOpenFileName (this, "Open CSV file", defaultPath, "CSV (*.csv)");
+    }
+    else
+    {
+        filePath = QFileDialog::getOpenFileName (this, "Open CSV file", ui->lineEdit_Filename->text(), "CSV (*.csv)");
+    }
+
     QFile importedCSV(filePath);
     QFileInfo fileInfo(importedCSV.fileName());
-
     if( !importedCSV.open( QIODevice::ReadOnly ) )
     {
-        ui->lineEdit_Filename->setText("path/filename.csv");
         qDebug() << "Could not open the file";
     }
     else
@@ -60,7 +67,6 @@ void MainWindow::on_pushButton_Load_clicked()
             getInfo(fileInfo);
             ui->lineEdit_Filename->setText(filePath);
     }
-
 }
 
 void MainWindow::on_pushButton_Save_clicked()
@@ -68,7 +74,6 @@ void MainWindow::on_pushButton_Save_clicked()
     QString path = ui->lineEdit_Filename->text();
     QString filePath = QFileDialog::getSaveFileName (this, "Open CSV file", path, "CSV (*.csv)");
     QFile exportedCSV( filePath );
-
     if( exportedCSV.open( QIODevice::WriteOnly ) )
     {
         QTextStream ts( &exportedCSV );
@@ -81,11 +86,10 @@ void MainWindow::on_pushButton_Save_clicked()
             {
                 strList << "\""+ui->tableWidget->item( r, c )->text()+"\"";
             }
-            ts << strList.join( "," )+"\n";
+                ts << strList.join( "," )+"\n";
         }
         exportedCSV.close(); // done with file
     }
-    ui->lineEdit_Filename->setText(filePath);
 }
 
 void MainWindow::on_pushButton_DeleteRows_clicked()
@@ -144,7 +148,6 @@ void MainWindow::getInfo(QFileInfo fileInfo)
     int nbRows = ui->tableWidget->rowCount();
     int nbColumns = ui->tableWidget->columnCount();
 
-
     str.clear();
     str.append( "<center><b>Info</b></center><br>" );
     str.append( "<b>File</b> " + filename + "<br>" );
@@ -168,4 +171,36 @@ void MainWindow::getInfo(QFileInfo fileInfo)
         str.append( "<br><b>Data matrix</b>  " + QString::number(nbRows) + "x" + QString::number(nbColumns-1));
     }
     ui->textBrowser_Info->setText( str );
+}
+
+void MainWindow::on_pushButton_GenerateMatlabInput_clicked()
+{
+    QString path = ui->lineEdit_Filename->text().split('.').first() + ".txt";
+    QString filePath = QFileDialog::getSaveFileName (this, "Open TXT file", path, "TXT (*.txt)");
+    QFile exportedCSV( filePath );
+    QFileInfo fileInfo( exportedCSV.fileName() );
+    QString prefix = (fileInfo.fileName()).split('_').first();
+
+    if( exportedCSV.open( QIODevice::WriteOnly ) )
+    {
+        QTextStream ts( &exportedCSV );
+        QStringList strList;
+        int cInit = 0;
+        if ( prefix == "COMP" )
+        {
+            cInit = 1;
+        }
+        qDebug() << cInit; //Test
+
+        for( int r = 1; r < ui->tableWidget->rowCount(); ++r )
+        {
+            strList.clear();
+            for( int c = cInit; c < ui->tableWidget->columnCount(); ++c )
+            {
+                strList << ui->tableWidget->item( r, c )->text();
+            }
+            ts << strList.join( "," )+"\n";
+        }
+        exportedCSV.close(); // done with file
+    }
 }

@@ -86,7 +86,14 @@
        <item>
         <widget class="QPushButton" name="pushButton_Save">
          <property name="text">
-          <string>Save</string>
+          <string>Save CSV File</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="pushButton_GenerateMatlabInput">
+         <property name="text">
+          <string>Generate Matlab Input File</string>
          </property>
         </widget>
        </item>
