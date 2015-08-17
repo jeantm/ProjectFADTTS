@@ -15,7 +15,7 @@ MainWindow::~MainWindow()
 
 void MainWindow::on_pushButton_Load_clicked()
 {
-    QString path = "/home/";
+    QString path = "/NIRAL/work/jeantm/FADTTS/Project/DataTest";
     QString filePath = QFileDialog::getOpenFileName (this, "Open CSV file", path, "CSV (*.csv)");
     QFile importedCSV(filePath);
     QFileInfo fileInfo(importedCSV.fileName());
@@ -65,8 +65,8 @@ void MainWindow::on_pushButton_Load_clicked()
 
 void MainWindow::on_pushButton_Save_clicked()
 {
-    QString path = ui->lineEdit_Filename->text();
-    QString filePath = QFileDialog::getSaveFileName (this, "Open CSV file", path, "CSV (*.csv)");
+    QString path = ui->lineEdit_Filename->text().split('.').first() + ".txt"; //QString path = ui->lineEdit_Filename->text();
+    QString filePath = QFileDialog::getSaveFileName (this, "Open TXT file", path, "TXT (*.txt)"); //QString filePath = QFileDialog::getSaveFileName (this, "Open CSV file", path, "CSV (*.csv)");
     QFile exportedCSV( filePath );
 
     if( exportedCSV.open( QIODevice::WriteOnly ) )
@@ -79,7 +79,7 @@ void MainWindow::on_pushButton_Save_clicked()
             strList.clear();
             for( int c = 0; c < ui->tableWidget->columnCount(); ++c )
             {
-                strList << "\""+ui->tableWidget->item( r, c )->text()+"\"";
+                strList << ui->tableWidget->item( r, c )->text(); //strList << "\""+ui->tableWidget->item( r, c )->text()+"\"";
             }
             ts << strList.join( "," )+"\n";
         }
