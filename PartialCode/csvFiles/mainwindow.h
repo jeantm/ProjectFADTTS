@@ -8,6 +8,8 @@
 #include <QDebug>
 #include <QString>
 #include <QStandardItemModel>
+#include <QtCore>
+#include <QtGui>
 
 namespace Ui {
 class MainWindow;
@@ -30,9 +32,11 @@ private slots:
 
     void on_pushButton_DeleteColumns_clicked();
 
-    void getInfo( QFileInfo filename );
+    QString getFileInfo(QFile &file );
 
     void on_pushButton_GenerateMatlabInput_clicked();
+
+    void on_pushButton_GetInfo_clicked();
 
 private:
     Ui::MainWindow *ui;

@@ -6,7 +6,10 @@ MainWindow::MainWindow(QWidget *parent) :
     ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
-}
+    QWidget* widget = new QWidget();
+    widget->setLayout(ui->gridLayout);
+    setCentralWidget(widget);
+    }
 
 MainWindow::~MainWindow()
 {
@@ -25,9 +28,8 @@ void MainWindow::on_pushButton_Load_clicked()
     {
         filePath = QFileDialog::getOpenFileName (this, "Open CSV file", ui->lineEdit_Filename->text(), "CSV (*.csv)");
     }
-
     QFile importedCSV(filePath);
-    QFileInfo fileInfo(importedCSV.fileName());
+
     if( !importedCSV.open( QIODevice::ReadOnly ) )
     {
         qDebug() << "Could not open the file";
@@ -46,10 +48,10 @@ void MainWindow::on_pushButton_Load_clicked()
             importedCSV.close();  // done with file
 
             // prep table
-            ui->tableWidget->setRowCount( list.count() );  // number of stringlists give row count
-            ui->tableWidget->setColumnCount( list[0].count() );  // count of entries from intial stringlist for column count
+            ui->tableWidget_csvFile->setRowCount( list.count() );  // number of stringlists gives row count
+            ui->tableWidget_csvFile->setColumnCount( list[0].count() );  // count of entries from intial stringlist for column count
 
-            ui->tableWidget->setUpdatesEnabled( false );  // for faster processing of large lists
+            ui->tableWidget_csvFile->setUpdatesEnabled( false );  // for faster processing of large lists
             foreach( QStringList l, list )
             {
                 foreach( QString str, l )
@@ -57,15 +59,15 @@ void MainWindow::on_pushButton_Load_clicked()
                     // remove quotes if str quoted
                     if( str.endsWith( '"' ) ) str.chop(1);
                     if( str.startsWith( '"' ) ) str.remove(0,1);
-                    ui->tableWidget->setItem( row, col++, new QTableWidgetItem( str ));
+                    ui->tableWidget_csvFile->setItem( row, col++, new QTableWidgetItem( str ));
                 }
                 row++; col=0;
             }
-            ui->tableWidget->setUpdatesEnabled( true );  // done with load
+            ui->tableWidget_csvFile->setUpdatesEnabled( true );  // done with load
 
             // display file info
-            getInfo(fileInfo);
-            ui->lineEdit_Filename->setText(filePath);
+            ui->textBrowser_Info->setText( getFileInfo(importedCSV) );
+            ui->lineEdit_Filename->setText( filePath );
     }
 }
 
@@ -79,12 +81,12 @@ void MainWindow::on_pushButton_Save_clicked()
         QTextStream ts( &exportedCSV );
         QStringList strList;
 
-        for( int r = 0; r < ui->tableWidget->rowCount(); ++r )
+        for( int r = 0; r < ui->tableWidget_csvFile->rowCount(); ++r )
         {
             strList.clear();
-            for( int c = 0; c < ui->tableWidget->columnCount(); ++c )
+            for( int c = 0; c < ui->tableWidget_csvFile->columnCount(); ++c )
             {
-                strList << "\""+ui->tableWidget->item( r, c )->text()+"\"";
+                strList << "\""+ui->tableWidget_csvFile->item( r, c )->text()+"\"";
             }
                 ts << strList.join( "," )+"\n";
         }
@@ -94,14 +96,13 @@ void MainWindow::on_pushButton_Save_clicked()
 
 void MainWindow::on_pushButton_DeleteRows_clicked()
 {
-    QItemSelection selection( ui->tableWidget->selectionModel()->selection() );
+    QItemSelection selection( ui->tableWidget_csvFile->selectionModel()->selection() );
 
     QList<int> rows;
     foreach( const QModelIndex & index, selection.indexes() )
     {
         rows.append( index.row() );
     }
-
     qSort( rows );
 
     int prev = -1;
@@ -110,7 +111,7 @@ void MainWindow::on_pushButton_DeleteRows_clicked()
         int current = rows[i];
         if( current != prev )
         {
-            ui->tableWidget->removeRow(current);
+            ui->tableWidget_csvFile->removeRow(current);
             prev = current;
         }
     }
@@ -118,14 +119,13 @@ void MainWindow::on_pushButton_DeleteRows_clicked()
 
 void MainWindow::on_pushButton_DeleteColumns_clicked()
 {
-    QItemSelection selection( ui->tableWidget->selectionModel()->selection() );
+    QItemSelection selection( ui->tableWidget_csvFile->selectionModel()->selection() );
 
     QList<int> columns;
     foreach( const QModelIndex & index, selection.indexes() )
     {
         columns.append( index.column() );
     }
-
     qSort( columns );
 
     int prev = -1;
@@ -134,43 +134,10 @@ void MainWindow::on_pushButton_DeleteColumns_clicked()
         int current = columns[i];
         if( current != prev )
         {
-            ui->tableWidget->removeColumn(current);
+            ui->tableWidget_csvFile->removeColumn(current);
             prev = current;
         }
     }
-}
-
-void MainWindow::getInfo(QFileInfo fileInfo)
-{
-    QString filename(fileInfo.fileName());
-    QString prefix = filename.split('_').first();
-    QString str;
-    int nbRows = ui->tableWidget->rowCount();
-    int nbColumns = ui->tableWidget->columnCount();
-
-    str.clear();
-    str.append( "<center><b>Info</b></center><br>" );
-    str.append( "<b>File</b> " + filename + "<br>" );
-
-    if ( prefix == "COMP")
-    {
-        str.append( "<br><b>Number of test subjects</b>  " + QString::number(nbRows-1) + "<br>" );
-        str.append( "<br><b>Number of covariates</b>  " + QString::number(nbColumns-1) + "<br>" );
-
-        for( int c = 1; c < nbColumns; ++c )
-        {
-            str.append( "-  " + ui->tableWidget->item( 0, c )->text() + "<br>" );
-        }
-        str.append( "<br><b>Data matrix</b>  " + QString::number(nbRows-1) + "x" + QString::number(nbColumns-1));
-    }
-
-    if ( prefix == "ad" || prefix == "rd" || prefix == "md" || prefix == "fa" )
-    {
-        str.append( "<br><b>Number of subjects</b>  " + QString::number(nbColumns-1) + "<br>" );
-
-        str.append( "<br><b>Data matrix</b>  " + QString::number(nbRows) + "x" + QString::number(nbColumns-1));
-    }
-    ui->textBrowser_Info->setText( str );
 }
 
 void MainWindow::on_pushButton_GenerateMatlabInput_clicked()
@@ -180,7 +147,6 @@ void MainWindow::on_pushButton_GenerateMatlabInput_clicked()
     QFile exportedCSV( filePath );
     QFileInfo fileInfo( exportedCSV.fileName() );
     QString prefix = (fileInfo.fileName()).split('_').first();
-
     if( exportedCSV.open( QIODevice::WriteOnly ) )
     {
         QTextStream ts( &exportedCSV );
@@ -190,17 +156,72 @@ void MainWindow::on_pushButton_GenerateMatlabInput_clicked()
         {
             cInit = 1;
         }
-        qDebug() << cInit; //Test
 
-        for( int r = 1; r < ui->tableWidget->rowCount(); ++r )
+        for( int r = 1; r < ui->tableWidget_csvFile->rowCount(); ++r )
         {
             strList.clear();
-            for( int c = cInit; c < ui->tableWidget->columnCount(); ++c )
+            for( int c = cInit; c < ui->tableWidget_csvFile->columnCount(); ++c )
             {
-                strList << ui->tableWidget->item( r, c )->text();
+                strList << ui->tableWidget_csvFile->item( r, c )->text();
             }
             ts << strList.join( "," )+"\n";
         }
         exportedCSV.close(); // done with file
     }
+}
+
+void MainWindow::on_pushButton_GetInfo_clicked()
+{
+    QString filePath = ui->lineEdit_Filename->text();
+    QFile mfile(filePath);
+
+    QMessageBox::information(this, " ", getFileInfo(mfile));
+}
+
+QString MainWindow::getFileInfo(QFile &file)
+{
+    QString str;
+    str.clear();
+
+    if( file.open( QIODevice::ReadOnly ) )
+    {
+        QFileInfo fileInfo(file.fileName());
+        QString filename(fileInfo.fileName());
+        QString prefix = filename.split('_').first();
+        int nbRows = ui->tableWidget_csvFile->rowCount();
+        int nbColumns = ui->tableWidget_csvFile->columnCount();
+
+
+        str.append( "<center><b>Information</b></center><br>" );
+        str.append( "<b>Filename</b> " + filename + "<br>" );
+        if ( prefix == "COMP")
+        {
+            str.append( "<br><b>Number of test subjects</b>  " + QString::number(nbRows-1) + "<br>" );
+            str.append( "<br><b>Number of covariates</b>  " + QString::number(nbColumns-1) + "<br>" );
+            for( int c = 1; c < nbColumns; ++c )
+            {
+                str.append( "-  " + ui->tableWidget_csvFile->item( 0, c )->text() + "<br>" );
+            }
+            str.append( "<br><b>Data matrix</b>  " + QString::number(nbRows-1) + "x" + QString::number(nbColumns-1));
+        }
+
+        else
+        {
+            if ( prefix == "ad" || prefix == "rd" || prefix == "md" || prefix == "fa" )
+            {
+                str.append( "<br><b>Number of subjects</b>  " + QString::number(nbColumns-1) + "<br>" );
+
+                str.append( "<br><b>Data matrix</b>  " + QString::number(nbRows) + "x" + QString::number(nbColumns-1));
+            }
+            else
+            {
+                str.append("<b>File information unavailable</b>");
+            }
+        }
+    }
+    else
+    {
+        str.append("<b>File information unavailable</b>");
+    }
+    return str;
 }
