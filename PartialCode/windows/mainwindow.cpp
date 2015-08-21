@@ -6,6 +6,13 @@ MainWindow::MainWindow(QWidget *parent) :
     mainUi(new Ui::MainWindow)
 {
     mainUi->setupUi(this);
+
+    inputDialog = new SetInput;
+    info = new Info;
+
+    QObject::connect(this, SIGNAL(prefixChanged(QString)), inputDialog, SLOT(prefixValue(QString)));
+    QObject::connect(this, SIGNAL(filePathChanged(QString)), inputDialog, SLOT(filePathValue(QString)));
+
 }
 
 MainWindow::~MainWindow()
@@ -13,76 +20,113 @@ MainWindow::~MainWindow()
     delete mainUi;
 }
 
-QStringList MainWindow::getFiles()
-{
-    return files;
-}
+/************ Public functions *************/
 
+/************ Private functions ************/
 void MainWindow::on_inputADfile_pushButton_clicked()
 {
-    SetInput setADfile;
-    setADfile.setModal(true);
-    setADfile.exec();
-    QString adFile = setADfile.getFilenameLineEdit();
+    QString newPrefix = mainUi->inputADfile_pushButton->text().split(" ").first();
+    QString newFilePath = mainUi->para_inputADfile_lineEdit->text();
+    emit prefixChanged(newPrefix);
+    emit filePathChanged(newFilePath);
+
+    inputDialog->setModal(true);
+    inputDialog->exec();
+    QString adFile = inputDialog->getFilenameLineEdit();
+    filesInfo.insert(0,inputDialog->displayFileInfo(adFile));
     mainUi->para_inputADfile_lineEdit->setText(adFile);
-    files[0]=adFile;
 }
 
 void MainWindow::on_inputRDfile_pushButton_clicked()
 {
-    SetInput setRDfile;
-    setRDfile.setModal(true);
-    setRDfile.exec();
-    QString rdFile = setRDfile.getFilenameLineEdit();
+    QString newPrefix = mainUi->inputRDfile_pushButton->text().split(" ").first();
+    QString newFilePath = mainUi->para_inputRDfile_lineEdit->text();
+    emit prefixChanged(newPrefix);
+    emit filePathChanged(newFilePath);
+
+    inputDialog->setModal(true);
+    inputDialog->exec();
+    QString rdFile = inputDialog->getFilenameLineEdit();
+    filesInfo.insert(1,inputDialog->displayFileInfo(rdFile));
     mainUi->para_inputRDfile_lineEdit->setText(rdFile);
-    files[1]=rdFile;
 }
 
 void MainWindow::on_inputMDfile_pushButton_clicked()
 {
-    SetInput setMDfile;
-    setMDfile.setModal(true);
-    setMDfile.exec();
-    QString mdFile = setMDfile.getFilenameLineEdit();
+    QString newPrefix = mainUi->inputMDfile_pushButton->text().split(" ").first();
+    QString newFilePath = mainUi->para_inputMDfile_lineEdit->text();
+    emit prefixChanged(newPrefix);
+    emit filePathChanged(newFilePath);
+
+    inputDialog->setModal(true);
+    inputDialog->exec();
+    QString mdFile = inputDialog->getFilenameLineEdit();
+    filesInfo.insert(2,inputDialog->displayFileInfo(mdFile));
     mainUi->para_inputMDfile_lineEdit->setText(mdFile);
-    files[2]=mdFile;
 }
 
 void MainWindow::on_inputFAfile_pushButton_clicked()
 {
-    SetInput setFAfile;
-    setFAfile.setModal(true);
-    setFAfile.exec();
-    QString faFile = setFAfile.getFilenameLineEdit();
+    QString newPrefix = mainUi->inputFAfile_pushButton->text().split(" ").first();
+    QString newFilePath = mainUi->para_inputFAfile_lineEdit->text();
+    emit prefixChanged(newPrefix);
+    emit filePathChanged(newFilePath);
+
+    inputDialog->setModal(true);
+    inputDialog->exec();
+    QString faFile = inputDialog->getFilenameLineEdit();
+    filesInfo.insert(3,inputDialog->displayFileInfo(faFile));
     mainUi->para_inputFAfile_lineEdit->setText(faFile);
-    files[3]=faFile;
 }
 
 void MainWindow::on_inputCovariatesfile_pushButton_clicked()
 {
-    SetInput setCovariatesfile;
-    setCovariatesfile.setModal(true);
-    setCovariatesfile.exec();
-    QString covariatesFile = setCovariatesfile.getFilenameLineEdit();
-    mainUi->para_inputCovariatesfilelineEdit->setText(covariatesFile);
-    files[4]=covariatesFile;
+    QString newPrefix = mainUi->inputCovariatesfile_pushButton->text().split(" ").first();
+    QString newFilePath = mainUi->para_inputCovariatesfile_lineEdit->text();
+    emit prefixChanged(newPrefix);
+    emit filePathChanged(newFilePath);
+
+    inputDialog->setModal(true);
+    inputDialog->exec();
+    QString covariatesFile = inputDialog->getFilenameLineEdit();
+    filesInfo.insert(4,inputDialog->displayFileInfo(covariatesFile));
+    mainUi->para_inputCovariatesfile_lineEdit->setText(covariatesFile);
 }
 
 void MainWindow::on_inputs_info_pushButton_clicked()
 {
-    Info info;
-    info.setModal(true);
-    info.getInfo(files);
-    info.exec();
-
-    /*info = new Info(this);
-    info->getInfo();
-    info->show();*/
+    if( filesInfo.isEmpty() )
+    {
+        initFilesInfo();
+    }
+    info->setModal(true);
+    info->displayInfo(filesInfo);
+    info->exec();
 }
 
 void MainWindow::on_output_dir_pushButton_clicked()
 {
-
+    QString defaultPath = "/work/jeantm/FADTTS/Project/DataTest";
+    QString dirPath;
+    if( mainUi->para_output_dir_lineEdit->text().compare("") == 0 )
+    {
+        dirPath = QFileDialog::getExistingDirectory(this, tr("Open Directory"), defaultPath, QFileDialog::ShowDirsOnly | QFileDialog::DontResolveSymlinks);
+    }
+    else
+    {
+        dirPath = QFileDialog::getExistingDirectory(this, tr("Open Directory"), mainUi->para_output_dir_lineEdit->text(), QFileDialog::ShowDirsOnly | QFileDialog::DontResolveSymlinks);
+    }
+    mainUi->para_output_dir_lineEdit->setText( dirPath );
 }
 
+void MainWindow::initFilesInfo()
+{
+    QStringList pref;
+    pref << "ad" << "rd" << "md" << "fa" << "COMP";
+    for(int i = 0; i < 5; i++)
+    {
+        filesInfo.insert(i,"<center><b>No File Information<br>Please select a correct data file</b><br>"
+                         "(Prefix must be " + pref.at(i) + "_)</center>");
+    }
+}
 

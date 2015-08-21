@@ -13,11 +13,13 @@ Info::~Info()
     delete IUi;
 }
 
-void Info::getInfo(QStringList files)
+
+/************ Public functions ************/
+void Info::displayInfo(QStringList files)
 {
-    IUi->adFileInfo_label->setText(getFileInfo(files[0]));
-    IUi->rdFileInfo_label->setText(getFileInfo(files[1]));
-    IUi->mdFileInfo_label->setText(getFileInfo(files[2]));
-    IUi->faFileInfo_label->setText(getFileInfo(files[3]));
-    IUi->covariatesFileInfo_label->setText(getFileInfo(files[4]));
+    IUi->adFileInfo_label->setText( files.at(0) );
+    IUi->rdFileInfo_label->setText( files.at(1) );
+    IUi->mdFileInfo_label->setText( files.at(2) );
+    IUi->faFileInfo_label->setText( files.at(3) );
+    IUi->covariatesFileInfo_label->setText( files.at(4) );
 }

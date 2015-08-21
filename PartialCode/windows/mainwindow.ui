@@ -9,8 +9,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>738</width>
-    <height>760</height>
+    <width>701</width>
+    <height>519</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -144,14 +144,12 @@
                <widget class="QLineEdit" name="para_inputFAfile_lineEdit"/>
               </item>
               <item row="4" column="1" colspan="4">
-               <widget class="QLineEdit" name="para_inputCovariatesfilelineEdit"/>
+               <widget class="QLineEdit" name="para_inputCovariatesfile_lineEdit"/>
               </item>
              </layout>
             </widget>
            </item>
           </layout>
-          <zorder>input_paths_groupBox</zorder>
-          <zorder>input_paths_groupBox</zorder>
          </widget>
         </item>
         <item>
@@ -488,7 +486,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>738</width>
+     <width>701</width>
      <height>25</height>
     </rect>
    </property>

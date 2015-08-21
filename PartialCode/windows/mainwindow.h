@@ -3,9 +3,9 @@
 
 #include <QMainWindow>
 #include <QFile>
+#include <QDir>
 #include "setinput.h"
 #include "info.h"
-
 
 
 namespace Ui {
@@ -20,7 +20,10 @@ public:
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
 
-    QStringList getFiles();
+signals:
+     void prefixChanged(const QString&);
+
+     void filePathChanged(const QString&);
     
 private slots:
     void on_inputADfile_pushButton_clicked();
@@ -39,7 +42,13 @@ private slots:
 
 private:
     Ui::MainWindow *mainUi;
-    QStringList files;
+
+    SetInput *inputDialog;
+    Info *info;
+
+    QStringList filesInfo;
+
+    void initFilesInfo();
 };
 
 #endif // MAINWINDOW_H

@@ -10,7 +10,7 @@
 #include <QStandardItemModel>
 #include <QtCore>
 #include <QtGui>
-#include "mainwindow.h"
+
 
 namespace Ui {
 class SetInput;
@@ -24,7 +24,7 @@ public:
     explicit SetInput(QWidget *parent = 0);
     ~SetInput();
 
-    QString getFileInfo(QString f);
+    QString displayFileInfo(QString f);
 
     QString getFilenameLineEdit();
 
@@ -37,9 +37,34 @@ private slots:
 
     void on_deleteColumns_pushButton_clicked();
 
+    void prefixValue(const QString &newPrefix);
+
+    void filePathValue(const QString &newFilePath);
+
+
 private:
     Ui::SetInput *ui;
 
+    QString checkPrefix;
+
+    QString checkFilePath;
+
 };
+
+class InfoFile {
+private:
+    int nbRows, nbColumns;
+    QString filename, prefix;
+
+public:
+    InfoFile (QString f, Ui::SetInput *ui);
+
+    int getNbRows();
+    int getNbColumns();
+    QString getFilename();
+    QString getPrefix();
+} ;
+
+
 
 #endif // SETINPUT_H

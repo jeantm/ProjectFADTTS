@@ -2,8 +2,8 @@
 #define INFO_H
 
 #include <QDialog>
-#include "setinput.h"
-#include "mainwindow.h"
+#include <QDebug>
+
 
 namespace Ui {
 class Info;
@@ -17,7 +17,7 @@ public:
     explicit Info(QWidget *parent = 0);
     ~Info();
 
-    void getInfo(QStringList files);
+    void displayInfo(QStringList file);
     
 private:
     Ui::Info *IUi;

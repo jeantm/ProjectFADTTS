@@ -19,7 +19,8 @@ SOURCES += main.cpp\
 
 HEADERS  += mainwindow.h \
     setinput.h \
-    info.h
+    info.h \
+    file.h
 
 FORMS    += mainwindow.ui \
     setinput.ui \
