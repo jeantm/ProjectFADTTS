@@ -36,9 +36,31 @@ private slots:
 
     void on_inputCovariatesfile_pushButton_clicked();
 
+    void on_editInputADfile_pushButton_clicked();
+
+    void on_editInputRDfile_pushButton_clicked();
+
+    void on_editInputMDfile_pushButton_clicked();
+
+    void on_editInputFAfile_pushButton_clicked();
+
+    void on_editInputCovariatesfile_pushButton_clicked();
+
+    void on_para_inputADfile_lineEdit_textChanged();
+
+    void on_para_inputRDfile_lineEdit_textChanged();
+
+    void on_para_inputMDfile_lineEdit_textChanged();
+
+    void on_para_inputFAfile_lineEdit_textChanged();
+
+    void on_para_inputCovariatesfile_lineEdit_textChanged();
+
     void on_inputs_info_pushButton_clicked();
 
     void on_output_dir_pushButton_clicked();
+
+    void on_inputAllFiles_pushButton_clicked();
 
 private:
     Ui::MainWindow *mainUi;
@@ -49,6 +71,14 @@ private:
     QStringList filesInfo;
 
     void initFilesInfo();
+
+    void setInputLineEdit(MainWindow * parent, QLineEdit* & lineEdit, QPushButton* & pushButton);
+
+    void setInputDialog( QLineEdit* & lineEdit, QPushButton* & pushButton, int i);
+
+    void emitToInputDialog(QLineEdit* & lineEdit, QPushButton* & pushButton);
+
+    void setLineEdits(QString ADFile, QString RDFile, QString MDFile, QString FAFile, QString CovariatesFile);
 };
 
 #endif // MAINWINDOW_H

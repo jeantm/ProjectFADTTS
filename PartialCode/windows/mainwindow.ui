@@ -50,49 +50,49 @@
               <string>Input Paths</string>
              </property>
              <layout class="QGridLayout" name="gridLayout_4">
-              <item row="5" column="4">
+              <item row="7" column="4">
                <widget class="QPushButton" name="inputs_info_pushButton">
                 <property name="text">
                  <string>Get Info Inputs</string>
                 </property>
                </widget>
               </item>
-              <item row="3" column="0">
+              <item row="4" column="0">
                <widget class="QPushButton" name="inputFAfile_pushButton">
                 <property name="text">
                  <string>FA File</string>
                 </property>
                </widget>
               </item>
-              <item row="2" column="0">
+              <item row="3" column="0">
                <widget class="QPushButton" name="inputMDfile_pushButton">
                 <property name="text">
                  <string>MD File</string>
                 </property>
                </widget>
               </item>
-              <item row="1" column="0">
+              <item row="2" column="0">
                <widget class="QPushButton" name="inputRDfile_pushButton">
                 <property name="text">
                  <string>RD File</string>
                 </property>
                </widget>
               </item>
-              <item row="0" column="0">
+              <item row="1" column="0">
                <widget class="QPushButton" name="inputADfile_pushButton">
                 <property name="text">
                  <string>AD File</string>
                 </property>
                </widget>
               </item>
-              <item row="4" column="0">
+              <item row="6" column="0">
                <widget class="QPushButton" name="inputCovariatesfile_pushButton">
                 <property name="text">
                  <string>Covariates File</string>
                 </property>
                </widget>
               </item>
-              <item row="5" column="0">
+              <item row="7" column="0">
                <spacer name="horizontalSpacer">
                 <property name="orientation">
                  <enum>Qt::Horizontal</enum>
@@ -105,7 +105,7 @@
                 </property>
                </spacer>
               </item>
-              <item row="5" column="2">
+              <item row="7" column="2">
                <spacer name="horizontalSpacer_3">
                 <property name="orientation">
                  <enum>Qt::Horizontal</enum>
@@ -118,7 +118,7 @@
                 </property>
                </spacer>
               </item>
-              <item row="5" column="1">
+              <item row="7" column="1">
                <spacer name="horizontalSpacer_2">
                 <property name="orientation">
                  <enum>Qt::Horizontal</enum>
@@ -131,20 +131,62 @@
                 </property>
                </spacer>
               </item>
-              <item row="0" column="1" colspan="4">
-               <widget class="QLineEdit" name="para_inputADfile_lineEdit"/>
-              </item>
-              <item row="1" column="1" colspan="4">
-               <widget class="QLineEdit" name="para_inputRDfile_lineEdit"/>
-              </item>
-              <item row="2" column="1" colspan="4">
-               <widget class="QLineEdit" name="para_inputMDfile_lineEdit"/>
-              </item>
-              <item row="3" column="1" colspan="4">
+              <item row="4" column="1" colspan="3">
                <widget class="QLineEdit" name="para_inputFAfile_lineEdit"/>
               </item>
-              <item row="4" column="1" colspan="4">
+              <item row="3" column="1" colspan="3">
+               <widget class="QLineEdit" name="para_inputMDfile_lineEdit"/>
+              </item>
+              <item row="2" column="1" colspan="3">
+               <widget class="QLineEdit" name="para_inputRDfile_lineEdit"/>
+              </item>
+              <item row="1" column="1" colspan="3">
+               <widget class="QLineEdit" name="para_inputADfile_lineEdit"/>
+              </item>
+              <item row="1" column="4">
+               <widget class="QPushButton" name="editInputADfile_pushButton">
+                <property name="text">
+                 <string>Edit</string>
+                </property>
+               </widget>
+              </item>
+              <item row="0" column="0">
+               <widget class="QPushButton" name="inputAllFiles_pushButton">
+                <property name="text">
+                 <string>Add Files</string>
+                </property>
+               </widget>
+              </item>
+              <item row="2" column="4">
+               <widget class="QPushButton" name="editInputRDfile_pushButton">
+                <property name="text">
+                 <string>Edit</string>
+                </property>
+               </widget>
+              </item>
+              <item row="3" column="4">
+               <widget class="QPushButton" name="editInputMDfile_pushButton">
+                <property name="text">
+                 <string>Edit</string>
+                </property>
+               </widget>
+              </item>
+              <item row="4" column="4">
+               <widget class="QPushButton" name="editInputFAfile_pushButton">
+                <property name="text">
+                 <string>Edit</string>
+                </property>
+               </widget>
+              </item>
+              <item row="6" column="1" colspan="3">
                <widget class="QLineEdit" name="para_inputCovariatesfile_lineEdit"/>
+              </item>
+              <item row="6" column="4">
+               <widget class="QPushButton" name="editInputCovariatesfile_pushButton">
+                <property name="text">
+                 <string>Edit</string>
+                </property>
+               </widget>
               </item>
              </layout>
             </widget>

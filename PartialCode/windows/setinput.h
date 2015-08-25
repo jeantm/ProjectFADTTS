@@ -28,6 +28,8 @@ public:
 
     QString getFilenameLineEdit();
 
+    void loadData();
+
 private slots:
     void on_searchFile_pushButton_clicked();
 
@@ -42,6 +44,7 @@ private slots:
     void filePathValue(const QString &newFilePath);
 
 
+
 private:
     Ui::SetInput *ui;
 
@@ -49,7 +52,12 @@ private:
 
     QString checkFilePath;
 
+    void displayData(QFile &f);
+
 };
+
+
+
 
 class InfoFile {
 private:

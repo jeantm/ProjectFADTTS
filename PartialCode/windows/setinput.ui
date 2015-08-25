@@ -40,13 +40,6 @@
         </property>
         <layout class="QGridLayout" name="gridLayout_2">
          <item row="2" column="1">
-          <widget class="QPushButton" name="searchFile_pushButton">
-           <property name="text">
-            <string>Search</string>
-           </property>
-          </widget>
-         </item>
-         <item row="2" column="0">
           <spacer name="horizontalSpacer_2">
            <property name="orientation">
             <enum>Qt::Horizontal</enum>
@@ -59,11 +52,18 @@
            </property>
           </spacer>
          </item>
-         <item row="1" column="0" colspan="2">
+         <item row="1" column="0" colspan="3">
           <widget class="QLineEdit" name="filename_lineEdit"/>
          </item>
-         <item row="0" column="0" colspan="2">
+         <item row="0" column="0" colspan="3">
           <widget class="QTableWidget" name="data_tableWidget"/>
+         </item>
+         <item row="2" column="2">
+          <widget class="QPushButton" name="searchFile_pushButton">
+           <property name="text">
+            <string>Search</string>
+           </property>
+          </widget>
          </item>
         </layout>
        </widget>
@@ -109,15 +109,7 @@
    </item>
    <item row="3" column="3">
     <widget class="QWidget" name="load_widget" native="true">
-     <layout class="QVBoxLayout" name="verticalLayout_7">
-      <item>
-       <widget class="QPushButton" name="load_pushButton">
-        <property name="text">
-         <string>Load</string>
-        </property>
-       </widget>
-      </item>
-     </layout>
+     <layout class="QVBoxLayout" name="verticalLayout_7"/>
     </widget>
    </item>
    <item row="3" column="4">
@@ -151,11 +143,9 @@
  <tabstops>
   <tabstop>data_tableWidget</tabstop>
   <tabstop>filename_lineEdit</tabstop>
-  <tabstop>searchFile_pushButton</tabstop>
   <tabstop>deleteRows_pushButton</tabstop>
   <tabstop>deleteColumns_pushButton</tabstop>
   <tabstop>saveFile_pushButton</tabstop>
-  <tabstop>load_pushButton</tabstop>
   <tabstop>close_pushButton</tabstop>
  </tabstops>
  <resources/>

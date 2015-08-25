@@ -20,10 +20,9 @@ SetInput::~SetInput()
 /************ Public functions *************/
 QString SetInput::displayFileInfo(QString f)
 {
-    QFile file(f);
     QString str;
     str.clear();
-    if( file.open( QIODevice::ReadOnly ) )
+    if( access(f.toLatin1().data(), 0) == 0 )
     {
         InfoFile fInfo(f, ui);
         QString filename = fInfo.getFilename();
@@ -57,12 +56,13 @@ QString SetInput::displayFileInfo(QString f)
         else
         {
             str.append("<center><b>No File Information<br>Please select a correct data file</b><br>"
-                       "(Prefix shoud  be <b>" + checkPrefix + "</b>)</center>");
+                       "(Prefix shoud  be <b>" + checkPrefix.toLower() + "_</b>)</center>");
         }
     }
     else
     {
-        qDebug() << "Could not open the file";
+        str.append("<center><b>No File Information<br>Please select a correct data file</b><br>"
+                   "(Prefix shoud  be <b>" + checkPrefix.toLower() + "_</b>)</center>");
     }
     return str;
 }
@@ -72,13 +72,52 @@ QString SetInput::getFilenameLineEdit()
     return ui->filename_lineEdit->text();
 }
 
+void SetInput::loadData()
+{
+    qDebug() << " SetInput load data: " + checkFilePath;
+    ui->data_tableWidget->clear();
+    ui->filename_lineEdit->setText( checkFilePath );
 
-/************ Private functions ************/
+    if(access(checkFilePath.toLatin1().data(), 0) == 0)
+    {
+        InfoFile fInfo(checkFilePath, ui);
+        QFile importedCSV(checkFilePath);
+        if( !importedCSV.open( QIODevice::ReadOnly ) )
+        {
+            qDebug() << "SetInput load data: Could not open the file";
+            return;
+        }
+        else
+        {
+            if(QString::compare(checkPrefix, fInfo.getPrefix(), Qt::CaseInsensitive) == 0)
+            {
+                displayData(importedCSV);
+            }
+            else
+            {
+                ui->fileInformation_label->setText( displayFileInfo(checkFilePath) );
+                qDebug() << "SetInput load data: Wrong file prefixe";
+                return;
+            }
+            ui->fileInformation_label->setText( displayFileInfo(checkFilePath) );
+        }
+    }
+    else
+    {
+        ui->fileInformation_label->setText( displayFileInfo(checkFilePath) );
+        qDebug() << "SetInput load data: File does not existe";
+        return;
+    }
+}
+
+
+/************ Private slots ************/
 void SetInput::on_searchFile_pushButton_clicked()
 {
+    ui->data_tableWidget->clear();
     QString defaultPath = "/work/jeantm/FADTTS/Project/DataTest";
     QString filePath;
-    if( checkFilePath.compare("") == 0 )
+    if( access(checkFilePath.toLatin1().data(), 0) != 0 )
     {
         filePath = QFileDialog::getOpenFileName (this, "Open CSV file", defaultPath, "CSV (*.csv)");
     }
@@ -91,54 +130,25 @@ void SetInput::on_searchFile_pushButton_clicked()
 
     if( !importedCSV.open( QIODevice::ReadOnly ) )
     {
-        qDebug() << "Could not open the file";
+        qDebug() << "SetInput search PushButton: Could not open the file";
         return;
     }
     else
     {
         if(QString::compare(checkPrefix, fInfo.getPrefix(), Qt::CaseInsensitive) == 0)
         {
-            QTextStream ts( &importedCSV );
-            QList<QStringList> list;
-            int row = 0, col = 0;
-
-            // read entire file and parse lines into list of stringlist's
-            while( !ts.atEnd() )
-            {
-                list << ts.readLine().split( "," );
-            }
-            importedCSV.close();  // done with file
-
-            // prep table
-            ui->data_tableWidget->setRowCount( list.count() );  // number of stringlists gives row count
-            ui->data_tableWidget->setColumnCount( list[0].count() );  // count of entries from intial stringlist for column count
-
-            ui->data_tableWidget->setUpdatesEnabled( false );  // for faster processing of large lists
-            foreach( QStringList l, list )
-            {
-                foreach( QString str, l )
-                {
-                    // remove quotes if str quoted
-                    if( str.endsWith( '"' ) ) str.chop(1);
-                    if( str.startsWith( '"' ) ) str.remove(0,1);
-                    ui->data_tableWidget->setItem( row, col++, new QTableWidgetItem( str ));
-                }
-                row++; col=0;
-            }
-            ui->data_tableWidget->setUpdatesEnabled( true );  // done with load
+            displayData(importedCSV);
 
             // display file info
             ui->fileInformation_label->setText( displayFileInfo(filePath) );
-
             ui->filename_lineEdit->setText( filePath );
         }
         else
         {
             ui->fileInformation_label->setText( displayFileInfo(filePath) );
-            qDebug() << "Wrong kind of file";
+            qDebug() << "SetInput search PushButton: Wrong kind of file";
             return;
         }
-        qDebug() <<displayFileInfo(filePath);
     }
 }
 
@@ -214,15 +224,46 @@ void SetInput::on_deleteColumns_pushButton_clicked()
 void SetInput::prefixValue(const QString &newPrefix)
 {
     checkPrefix = newPrefix;
-    qDebug() << checkPrefix;
 }
 
 void SetInput::filePathValue(const QString &newFilePath)
 {
     checkFilePath = newFilePath;
-    qDebug() << checkFilePath;
 }
 
+
+/************ Private functions ************/
+void SetInput::displayData(QFile &f)
+{
+    QTextStream ts( &f );
+    QList<QStringList> list;
+    int row = 0, col = 0;
+
+    // read entire file and parse lines into list of stringlist's
+    while( !ts.atEnd() )
+    {
+        list << ts.readLine().split( "," );
+    }
+    f.close();  // done with file
+
+    // prep table
+    ui->data_tableWidget->setRowCount( list.count() );  // number of stringlists gives row count
+    ui->data_tableWidget->setColumnCount( list[0].count() );  // count of entries from intial stringlist for column count
+
+    ui->data_tableWidget->setUpdatesEnabled( false );  // for faster processing of large lists
+    foreach( QStringList l, list )
+    {
+        foreach( QString str, l )
+        {
+            // remove quotes if str quoted
+            if( str.endsWith( '"' ) ) str.chop(1);
+            if( str.startsWith( '"' ) ) str.remove(0,1);
+            ui->data_tableWidget->setItem( row, col++, new QTableWidgetItem( str ));
+        }
+        row++; col=0;
+    }
+    ui->data_tableWidget->setUpdatesEnabled( true );  // done with load
+}
 
 /**************************************************************/
 /*********************** InfoFile Class ***********************/
