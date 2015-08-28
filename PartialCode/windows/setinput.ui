@@ -39,31 +39,8 @@
          <string>Data</string>
         </property>
         <layout class="QGridLayout" name="gridLayout_2">
-         <item row="2" column="1">
-          <spacer name="horizontalSpacer_2">
-           <property name="orientation">
-            <enum>Qt::Horizontal</enum>
-           </property>
-           <property name="sizeHint" stdset="0">
-            <size>
-             <width>40</width>
-             <height>20</height>
-            </size>
-           </property>
-          </spacer>
-         </item>
-         <item row="1" column="0" colspan="3">
-          <widget class="QLineEdit" name="filename_lineEdit"/>
-         </item>
-         <item row="0" column="0" colspan="3">
+         <item row="0" column="0" colspan="2">
           <widget class="QTableWidget" name="data_tableWidget"/>
-         </item>
-         <item row="2" column="2">
-          <widget class="QPushButton" name="searchFile_pushButton">
-           <property name="text">
-            <string>Search</string>
-           </property>
-          </widget>
          </item>
         </layout>
        </widget>
@@ -97,7 +74,7 @@
          <item row="4" column="0" colspan="2">
           <widget class="QPushButton" name="saveFile_pushButton">
            <property name="text">
-            <string>Save CSV File</string>
+            <string>Save CSV File as ...</string>
            </property>
           </widget>
          </item>
@@ -107,14 +84,25 @@
      </layout>
     </widget>
    </item>
-   <item row="3" column="3">
-    <widget class="QWidget" name="load_widget" native="true">
-     <layout class="QVBoxLayout" name="verticalLayout_7"/>
-    </widget>
-   </item>
    <item row="3" column="4">
     <widget class="QWidget" name="close_widget" native="true">
      <layout class="QVBoxLayout" name="verticalLayout_2">
+      <item>
+       <spacer name="verticalSpacer">
+        <property name="orientation">
+         <enum>Qt::Vertical</enum>
+        </property>
+        <property name="sizeType">
+         <enum>QSizePolicy::Minimum</enum>
+        </property>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>20</width>
+          <height>40</height>
+         </size>
+        </property>
+       </spacer>
+      </item>
       <item>
        <widget class="QPushButton" name="close_pushButton">
         <property name="text">
@@ -142,7 +130,6 @@
  </widget>
  <tabstops>
   <tabstop>data_tableWidget</tabstop>
-  <tabstop>filename_lineEdit</tabstop>
   <tabstop>deleteRows_pushButton</tabstop>
   <tabstop>deleteColumns_pushButton</tabstop>
   <tabstop>saveFile_pushButton</tabstop>

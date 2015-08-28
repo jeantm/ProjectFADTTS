@@ -20,28 +20,29 @@ class SetInput : public QDialog
 {
     Q_OBJECT
     
+
+
 public:
     explicit SetInput(QWidget *parent = 0);
     ~SetInput();
 
-    QString displayFileInfo(QString f);
-
-    QString getFilenameLineEdit();
-
     void loadData();
 
-private slots:
-    void on_searchFile_pushButton_clicked();
 
+
+private slots:
     void on_saveFile_pushButton_clicked();
 
     void on_deleteRows_pushButton_clicked();
 
     void on_deleteColumns_pushButton_clicked();
 
+
     void prefixValue(const QString &newPrefix);
 
-    void filePathValue(const QString &newFilePath);
+    void filePathInputValue(const QString &newFilePathInput);
+
+    void defaultInputPathMainWindowValue(const QString &newDefaultInputPathMainWindow);
 
 
 
@@ -50,29 +51,16 @@ private:
 
     QString checkPrefix;
 
-    QString checkFilePath;
+    QString checkFilePathInput;
+
+    QString defaultPathSetInput;
+
+    QStringList covariates;
+
 
     void displayData(QFile &f);
 
+    void displayFileInfo(QString f);
 };
-
-
-
-
-class InfoFile {
-private:
-    int nbRows, nbColumns;
-    QString filename, prefix;
-
-public:
-    InfoFile (QString f, Ui::SetInput *ui);
-
-    int getNbRows();
-    int getNbColumns();
-    QString getFilename();
-    QString getPrefix();
-} ;
-
-
 
 #endif // SETINPUT_H

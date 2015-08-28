@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>532</width>
-    <height>185</height>
+    <height>87</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -127,16 +127,16 @@
     </widget>
    </item>
    <item>
-    <widget class="QWidget" name="covariatesFileInfo_widget" native="true">
+    <widget class="QWidget" name="compFileInfo_widget" native="true">
      <layout class="QVBoxLayout" name="verticalLayout_5">
       <item>
-       <widget class="QGroupBox" name="covariatesFileInfo_groupBox">
+       <widget class="QGroupBox" name="compFileInfo_groupBox">
         <property name="title">
          <string>Covariates Files</string>
         </property>
         <layout class="QVBoxLayout" name="verticalLayout_10">
          <item>
-          <widget class="QLabel" name="covariatesFileInfo_label">
+          <widget class="QLabel" name="compFileInfo_label">
            <property name="text">
             <string/>
            </property>

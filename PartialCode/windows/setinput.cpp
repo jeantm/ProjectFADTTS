@@ -2,9 +2,6 @@
 #include "ui_setinput.h"
 
 
-/**************************************************************/
-/*********************** SetInput Class ***********************/
-/**************************************************************/
 SetInput::SetInput(QWidget *parent) :
     QDialog(parent),
     ui(new Ui::SetInput)
@@ -17,145 +14,41 @@ SetInput::~SetInput()
     delete ui;
 }
 
-/************ Public functions *************/
-QString SetInput::displayFileInfo(QString f)
-{
-    QString str;
-    str.clear();
-    if( access(f.toLatin1().data(), 0) == 0 )
-    {
-        InfoFile fInfo(f, ui);
-        QString filename = fInfo.getFilename();
-        QString prefix = fInfo.getPrefix();
-        int nbRows = fInfo.getNbRows();
-        int nbColumns = fInfo.getNbColumns();
-
-        if(QString::compare(checkPrefix, fInfo.getPrefix(), Qt::CaseInsensitive) == 0)
-        {
-            str.append( "<br><br><b>Filename</b> " + filename + "<br>" );
-            if ( prefix == "COMP")
-            {
-                str.append( "<br><b>Number of test subjects</b>  " + QString::number(nbRows-1) + "<br>" );
-                str.append( "<br><b>Data matrix</b>  " + QString::number(nbRows-1) + "x" + QString::number(nbColumns-1) + "<br>");
-                str.append( "<br><b>Number of covariates</b>  " + QString::number(nbColumns-1));
-                for( int c = 1; c < nbColumns; ++c )
-                {
-                    str.append( "<br>-  " + ui->data_tableWidget->item( 0, c )->text());
-                }
-            }
-
-            else
-            {
-                if ( prefix == "ad" || prefix == "rd" || prefix == "md" || prefix == "fa" )
-                {
-                    str.append( "<br><b>Number of subjects</b>  " + QString::number(nbColumns-1) + "<br>" );
-                    str.append( "<br><b>Data matrix</b>  " + QString::number(nbRows) + "x" + QString::number(nbColumns-1));
-                }
-            }
-        }
-        else
-        {
-            str.append("<center><b>No File Information<br>Please select a correct data file</b><br>"
-                       "(Prefix shoud  be <b>" + checkPrefix.toLower() + "_</b>)</center>");
-        }
-    }
-    else
-    {
-        str.append("<center><b>No File Information<br>Please select a correct data file</b><br>"
-                   "(Prefix shoud  be <b>" + checkPrefix.toLower() + "_</b>)</center>");
-    }
-    return str;
-}
-
-QString SetInput::getFilenameLineEdit()
-{
-    return ui->filename_lineEdit->text();
-}
-
+/***************************************************************/
+/********************** Public functions ***********************/
+/***************************************************************/
 void SetInput::loadData()
 {
-    qDebug() << " SetInput load data: " + checkFilePath;
     ui->data_tableWidget->clear();
-    ui->filename_lineEdit->setText( checkFilePath );
 
-    if(access(checkFilePath.toLatin1().data(), 0) == 0)
-    {
-        InfoFile fInfo(checkFilePath, ui);
-        QFile importedCSV(checkFilePath);
-        if( !importedCSV.open( QIODevice::ReadOnly ) )
-        {
-            qDebug() << "SetInput load data: Could not open the file";
-            return;
-        }
-        else
-        {
-            if(QString::compare(checkPrefix, fInfo.getPrefix(), Qt::CaseInsensitive) == 0)
-            {
-                displayData(importedCSV);
-            }
-            else
-            {
-                ui->fileInformation_label->setText( displayFileInfo(checkFilePath) );
-                qDebug() << "SetInput load data: Wrong file prefixe";
-                return;
-            }
-            ui->fileInformation_label->setText( displayFileInfo(checkFilePath) );
-        }
-    }
-    else
-    {
-        ui->fileInformation_label->setText( displayFileInfo(checkFilePath) );
-        qDebug() << "SetInput load data: File does not existe";
-        return;
-    }
-}
-
-
-/************ Private slots ************/
-void SetInput::on_searchFile_pushButton_clicked()
-{
-    ui->data_tableWidget->clear();
-    QString defaultPath = "/work/jeantm/FADTTS/Project/DataTest";
-    QString filePath;
-    if( access(checkFilePath.toLatin1().data(), 0) != 0 )
-    {
-        filePath = QFileDialog::getOpenFileName (this, "Open CSV file", defaultPath, "CSV (*.csv)");
-    }
-    else
-    {
-        filePath = QFileDialog::getOpenFileName (this, "Open CSV file", checkFilePath, "CSV (*.csv)");
-    }
-    InfoFile fInfo(filePath, ui);
-    QFile importedCSV(filePath);
+    QString prefix = checkFilePathInput.split("/").last().split("_").first();
+    QFile importedCSV(checkFilePathInput);
 
     if( !importedCSV.open( QIODevice::ReadOnly ) )
     {
-        qDebug() << "SetInput search PushButton: Could not open the file";
-        return;
+        qDebug() << "SetInput loadData(): Could not open the file";
     }
     else
     {
-        if(QString::compare(checkPrefix, fInfo.getPrefix(), Qt::CaseInsensitive) == 0)
+        if(QString::compare(checkPrefix, prefix, Qt::CaseInsensitive) == 0)
         {
             displayData(importedCSV);
-
-            // display file info
-            ui->fileInformation_label->setText( displayFileInfo(filePath) );
-            ui->filename_lineEdit->setText( filePath );
         }
         else
         {
-            ui->fileInformation_label->setText( displayFileInfo(filePath) );
-            qDebug() << "SetInput search PushButton: Wrong kind of file";
-            return;
+            qDebug() << "SetInput loadData(): Wrong file prefixe";
         }
     }
+    displayFileInfo( checkFilePathInput );
 }
 
+
+/***************************************************************/
+/************************ Private slots ************************/
+/***************************************************************/
 void SetInput::on_saveFile_pushButton_clicked()
 {
-    QString path = ui->filename_lineEdit->text();
-    QString filePath = QFileDialog::getSaveFileName (this, "Open CSV file", path, "CSV (*.csv)");
+    QString filePath = QFileDialog::getSaveFileName (this, "Open CSV file", defaultPathSetInput, "CSV (*.csv)");
     QFile exportedCSV( filePath );
     if( exportedCSV.open( QIODevice::WriteOnly ) )
     {
@@ -169,8 +62,9 @@ void SetInput::on_saveFile_pushButton_clicked()
             {
                 strList << "\""+ui->data_tableWidget->item( r, c )->text()+"\"";
             }
-                ts << strList.join( "," )+"\n";
+            ts << strList.join( "," )+"\n";
         }
+        exportedCSV.flush();
         exportedCSV.close(); // done with file
     }
 }
@@ -221,18 +115,26 @@ void SetInput::on_deleteColumns_pushButton_clicked()
     }
 }
 
+
 void SetInput::prefixValue(const QString &newPrefix)
 {
     checkPrefix = newPrefix;
 }
 
-void SetInput::filePathValue(const QString &newFilePath)
+void SetInput::filePathInputValue(const QString &newFilePathInput)
 {
-    checkFilePath = newFilePath;
+    checkFilePathInput = newFilePathInput;
+}
+
+void SetInput::defaultInputPathMainWindowValue(const QString &newDefaultInputPathMainWindow)
+{
+    defaultPathSetInput = newDefaultInputPathMainWindow;
 }
 
 
-/************ Private functions ************/
+/***************************************************************/
+/********************** Private functions **********************/
+/***************************************************************/
 void SetInput::displayData(QFile &f)
 {
     QTextStream ts( &f );
@@ -265,37 +167,53 @@ void SetInput::displayData(QFile &f)
     ui->data_tableWidget->setUpdatesEnabled( true );  // done with load
 }
 
-/**************************************************************/
-/*********************** InfoFile Class ***********************/
-/**************************************************************/
-
-/************ Public functions ************/
-InfoFile::InfoFile(QString f, Ui::SetInput *ui)
+void SetInput::displayFileInfo(QString f)
 {
+    QString str;
+    str.clear();
+    str.append("<br><center><b>No File Information</b></center><br><b>Please select a correct data file</b><br>"
+               "(Prefix should  be <b>" + checkPrefix.toLower() + "_</b>)");
     QFile file(f);
-    QFileInfo fInfo(file.fileName());
-    filename = (fInfo.fileName());
-    prefix = filename.split('_').first();
-    nbRows = ui->data_tableWidget->rowCount();
-    nbColumns = ui->data_tableWidget->columnCount();
-}
 
-int InfoFile::getNbRows()
-{
-    return nbRows;
-}
+    if( !file.open( QIODevice::ReadOnly ) )
+    {
+        qDebug() << "SetInput displayFileInfo(): Could not open the file";
+    }
+    else
+    {
+        file.close();
+        QFileInfo fInfo(file.fileName());
+        QString filename = fInfo.fileName();
+        QString prefix = filename.split('_').first();
+        int nbRows = ui->data_tableWidget->rowCount();
+        int nbColumns = ui->data_tableWidget->columnCount();
 
-int InfoFile::getNbColumns()
-{
-    return nbColumns;
-}
-
-QString InfoFile::getFilename()
-{
-    return filename;
-}
-
-QString InfoFile::getPrefix()
-{
-    return prefix;
+        if(QString::compare(checkPrefix, prefix, Qt::CaseInsensitive) == 0)
+        {
+            str.clear();
+            str.append( "<br><br><b>Filename</b> " + filename + "<br>" );
+            if ( prefix == "COMP")
+            {
+                str.append( "<br><b>Number of test subjects</b>  " + QString::number(nbRows-1) + "<br>" );
+                str.append( "<br><b>Data matrix</b>  " + QString::number(nbRows-1) + "x" + QString::number(nbColumns-1) + "<br>");
+                str.append( "<br><b>Number of COMP</b>  " + QString::number(nbColumns-1));
+                for( int c = 1; c < nbColumns; ++c )
+                {
+                    QString cov = ui->data_tableWidget->item( 0, c )->text();
+                    str.append( "<br>-  " + cov);
+                    covariates.append(cov);
+                }
+                covariates.push_front("Intercept");
+            }
+            else
+            {
+                if ( prefix == "ad" || prefix == "rd" || prefix == "md" || prefix == "fa" )
+                {
+                    str.append( "<br><b>Number of subjects</b>  " + QString::number(nbColumns-1) + "<br>" );
+                    str.append( "<br><b>Data matrix</b>  " + QString::number(nbRows) + "x" + QString::number(nbColumns-1));
+                }
+            }
+        }
+    }
+    ui->fileInformation_label->setText( str );
 }

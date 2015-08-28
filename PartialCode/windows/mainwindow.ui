@@ -9,19 +9,19 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>701</width>
-    <height>519</height>
+    <width>914</width>
+    <height>632</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>Find a good title</string>
   </property>
   <widget class="QWidget" name="centralWidget">
-   <layout class="QGridLayout" name="gridLayout_5">
+   <layout class="QGridLayout" name="gridLayout_7">
     <item row="0" column="0">
      <widget class="QTabWidget" name="tabWidget">
       <property name="currentIndex">
-       <number>0</number>
+       <number>3</number>
       </property>
       <widget class="QWidget" name="input_output_setting_tab">
        <attribute name="title">
@@ -60,35 +60,35 @@
               <item row="4" column="0">
                <widget class="QPushButton" name="inputFAfile_pushButton">
                 <property name="text">
-                 <string>FA File</string>
+                 <string>Specify FA Data File</string>
                 </property>
                </widget>
               </item>
               <item row="3" column="0">
                <widget class="QPushButton" name="inputMDfile_pushButton">
                 <property name="text">
-                 <string>MD File</string>
+                 <string>Specify MD Data File</string>
                 </property>
                </widget>
               </item>
               <item row="2" column="0">
                <widget class="QPushButton" name="inputRDfile_pushButton">
                 <property name="text">
-                 <string>RD File</string>
+                 <string>Specify RD Data File</string>
                 </property>
                </widget>
               </item>
               <item row="1" column="0">
                <widget class="QPushButton" name="inputADfile_pushButton">
                 <property name="text">
-                 <string>AD File</string>
+                 <string>Specify AD Data File</string>
                 </property>
                </widget>
               </item>
               <item row="6" column="0">
-               <widget class="QPushButton" name="inputCovariatesfile_pushButton">
+               <widget class="QPushButton" name="inputCOMPfile_pushButton">
                 <property name="text">
-                 <string>Covariates File</string>
+                 <string>Specify Covariates Data File</string>
                 </property>
                </widget>
               </item>
@@ -153,7 +153,7 @@
               <item row="0" column="0">
                <widget class="QPushButton" name="inputAllFiles_pushButton">
                 <property name="text">
-                 <string>Add Files</string>
+                 <string>Add Data Files</string>
                 </property>
                </widget>
               </item>
@@ -179,10 +179,10 @@
                </widget>
               </item>
               <item row="6" column="1" colspan="3">
-               <widget class="QLineEdit" name="para_inputCovariatesfile_lineEdit"/>
+               <widget class="QLineEdit" name="para_inputCOMPfile_lineEdit"/>
               </item>
               <item row="6" column="4">
-               <widget class="QPushButton" name="editInputCovariatesfile_pushButton">
+               <widget class="QPushButton" name="editInputCOMPfile_pushButton">
                 <property name="text">
                  <string>Edit</string>
                 </property>
@@ -219,7 +219,7 @@
               <item>
                <widget class="QPushButton" name="output_dir_pushButton">
                 <property name="text">
-                 <string>Output Directory</string>
+                 <string>Set Output Directory</string>
                 </property>
                </widget>
               </item>
@@ -272,7 +272,7 @@
          </spacer>
         </item>
         <item>
-         <widget class="QPushButton" name="pushButton">
+         <widget class="QPushButton" name="close_pushButton">
           <property name="text">
            <string>Close</string>
           </property>
@@ -293,7 +293,202 @@
         </item>
        </layout>
       </widget>
-      <widget class="QWidget" name="Parameters">
+      <widget class="QWidget" name="subjects_tab">
+       <attribute name="title">
+        <string>Subjects</string>
+       </attribute>
+       <layout class="QGridLayout" name="gridLayout_3">
+        <item row="0" column="2" rowspan="3" colspan="2">
+         <widget class="QWidget" name="matchSubjects_widget" native="true">
+          <layout class="QVBoxLayout" name="verticalLayout_11">
+           <item>
+            <widget class="QGroupBox" name="matchSubjects_groupBox">
+             <property name="title">
+              <string>Match Subjects</string>
+             </property>
+             <layout class="QGridLayout" name="gridLayout_6">
+              <item row="1" column="0" rowspan="2" colspan="2">
+               <widget class="QListWidget" name="matchSubjects_listWidget"/>
+              </item>
+             </layout>
+            </widget>
+           </item>
+           <item>
+            <widget class="QPushButton" name="match_subjectsList_pushButton">
+             <property name="text">
+              <string>Match Subjects</string>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </widget>
+        </item>
+        <item row="1" column="0">
+         <widget class="QWidget" name="subjectsList_widget" native="true">
+          <layout class="QVBoxLayout" name="verticalLayout">
+           <item>
+            <widget class="QGroupBox" name="subjectsList_groupBox">
+             <property name="title">
+              <string>Manage Subjects List</string>
+             </property>
+             <layout class="QGridLayout" name="gridLayout">
+              <item row="1" column="0">
+               <widget class="QPushButton" name="inputSubjectList_lineEdit">
+                <property name="text">
+                 <string>Load Subjects List</string>
+                </property>
+               </widget>
+              </item>
+              <item row="1" column="1">
+               <widget class="QPushButton" name="create_subjectsListFrom_pushButton">
+                <property name="text">
+                 <string>Create Subjects List from ...</string>
+                </property>
+               </widget>
+              </item>
+              <item row="7" column="0" colspan="2">
+               <widget class="QPushButton" name="edit_inputSubjectList_lineEdit">
+                <property name="text">
+                 <string>Edit</string>
+                </property>
+               </widget>
+              </item>
+              <item row="6" column="0" colspan="2">
+               <widget class="QLineEdit" name="para_inputSubjectList_lineEdit"/>
+              </item>
+             </layout>
+            </widget>
+           </item>
+           <item>
+            <spacer name="verticalSpacer_13">
+             <property name="orientation">
+              <enum>Qt::Vertical</enum>
+             </property>
+             <property name="sizeHint" stdset="0">
+              <size>
+               <width>20</width>
+               <height>40</height>
+              </size>
+             </property>
+            </spacer>
+           </item>
+          </layout>
+         </widget>
+        </item>
+        <item row="0" column="0">
+         <widget class="QWidget" name="data_widget" native="true">
+          <layout class="QVBoxLayout" name="verticalLayout_9">
+           <item>
+            <widget class="QGroupBox" name="data_groupBox">
+             <property name="title">
+              <string>Data</string>
+             </property>
+             <layout class="QGridLayout" name="gridLayout_5">
+              <item row="0" column="0">
+               <widget class="QCheckBox" name="para_adData_checkBox">
+                <property name="text">
+                 <string>ad Data</string>
+                </property>
+               </widget>
+              </item>
+              <item row="1" column="0">
+               <widget class="QCheckBox" name="para_rdData_checkBox">
+                <property name="text">
+                 <string>rd Data</string>
+                </property>
+               </widget>
+              </item>
+              <item row="2" column="0">
+               <widget class="QCheckBox" name="para_mdData_checkBox">
+                <property name="text">
+                 <string>md Data</string>
+                </property>
+               </widget>
+              </item>
+              <item row="3" column="0">
+               <widget class="QCheckBox" name="para_faData_checkBox">
+                <property name="text">
+                 <string>fa Data</string>
+                </property>
+               </widget>
+              </item>
+              <item row="4" column="0">
+               <widget class="QCheckBox" name="para_compData_checkBox">
+                <property name="text">
+                 <string>Covariates Data</string>
+                </property>
+               </widget>
+              </item>
+              <item row="0" column="2">
+               <widget class="QLabel" name="adDataSize_label">
+                <property name="text">
+                 <string>Data matrix:</string>
+                </property>
+               </widget>
+              </item>
+              <item row="1" column="2">
+               <widget class="QLabel" name="rdDataSize_label">
+                <property name="text">
+                 <string>Data matrix:</string>
+                </property>
+               </widget>
+              </item>
+              <item row="2" column="2">
+               <widget class="QLabel" name="mdDataSize_label">
+                <property name="text">
+                 <string>Data matrix:</string>
+                </property>
+               </widget>
+              </item>
+              <item row="3" column="2">
+               <widget class="QLabel" name="faDataSize_label">
+                <property name="text">
+                 <string>Data matrix:</string>
+                </property>
+               </widget>
+              </item>
+              <item row="4" column="2">
+               <widget class="QLabel" name="compDataSize_label">
+                <property name="text">
+                 <string>Data matrix:</string>
+                </property>
+               </widget>
+              </item>
+             </layout>
+            </widget>
+           </item>
+           <item>
+            <spacer name="verticalSpacer_12">
+             <property name="orientation">
+              <enum>Qt::Vertical</enum>
+             </property>
+             <property name="sizeHint" stdset="0">
+              <size>
+               <width>20</width>
+               <height>40</height>
+              </size>
+             </property>
+            </spacer>
+           </item>
+          </layout>
+         </widget>
+        </item>
+        <item row="0" column="4">
+         <spacer name="horizontalSpacer_6">
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>40</width>
+            <height>20</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+       </layout>
+      </widget>
+      <widget class="QWidget" name="parameters_tab">
        <attribute name="title">
         <string>Parameters</string>
        </attribute>
@@ -385,7 +580,7 @@
         </item>
        </layout>
       </widget>
-      <widget class="QWidget" name="Run">
+      <widget class="QWidget" name="run_tab">
        <attribute name="title">
         <string>Run</string>
        </attribute>
@@ -528,7 +723,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>701</width>
+     <width>914</width>
      <height>25</height>
     </rect>
    </property>
@@ -538,7 +733,7 @@
  <resources/>
  <connections>
   <connection>
-   <sender>pushButton</sender>
+   <sender>close_pushButton</sender>
    <signal>clicked()</signal>
    <receiver>MainWindow</receiver>
    <slot>close()</slot>

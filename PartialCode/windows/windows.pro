@@ -15,13 +15,16 @@ TEMPLATE = app
 SOURCES += main.cpp\
         mainwindow.cpp \
     setinput.cpp \
-    info.cpp
+    info.cpp \
+    subjectslist.cpp
 
 HEADERS  += mainwindow.h \
     setinput.h \
     info.h \
-    file.h
+    file.h \
+    subjectslist.h
 
 FORMS    += mainwindow.ui \
     setinput.ui \
-    info.ui
+    info.ui \
+    subjectslist.ui
