@@ -21,23 +21,14 @@ void SetInput::loadData()
 {
     ui->data_tableWidget->clear();
 
-    QString prefix = checkFilePathInput.split("/").last().split("_").first();
     QFile importedCSV(checkFilePathInput);
-
     if( !importedCSV.open( QIODevice::ReadOnly ) )
     {
         qDebug() << "SetInput loadData(): Could not open the file";
     }
     else
     {
-        if(QString::compare(checkPrefix, prefix, Qt::CaseInsensitive) == 0)
-        {
-            displayData(importedCSV);
-        }
-        else
-        {
-            qDebug() << "SetInput loadData(): Wrong file prefixe";
-        }
+        displayData(importedCSV);
     }
     displayFileInfo( checkFilePathInput );
 }
@@ -171,8 +162,7 @@ void SetInput::displayFileInfo(QString f)
 {
     QString str;
     str.clear();
-    str.append("<br><center><b>No File Information</b></center><br><b>Please select a correct data file</b><br>"
-               "(Prefix should  be <b>" + checkPrefix.toLower() + "_</b>)");
+    str.append("<br><center><b>No File Information</b></center><br><b>Please select a correct data file</b><br>");
     QFile file(f);
 
     if( !file.open( QIODevice::ReadOnly ) )
@@ -184,34 +174,30 @@ void SetInput::displayFileInfo(QString f)
         file.close();
         QFileInfo fInfo(file.fileName());
         QString filename = fInfo.fileName();
-        QString prefix = filename.split('_').first();
         int nbRows = ui->data_tableWidget->rowCount();
         int nbColumns = ui->data_tableWidget->columnCount();
 
-        if(QString::compare(checkPrefix, prefix, Qt::CaseInsensitive) == 0)
+        str.clear();
+        str.append( "<br><br><b>Filename</b> " + filename + "<br>" );
+        if ( checkPrefix == "COMP")
         {
-            str.clear();
-            str.append( "<br><br><b>Filename</b> " + filename + "<br>" );
-            if ( prefix == "COMP")
+            str.append( "<br><b>Number of test subjects</b>  " + QString::number(nbRows-1) + "<br>" );
+            str.append( "<br><b>Data matrix</b>  " + QString::number(nbRows-1) + "x" + QString::number(nbColumns-1) + "<br>");
+            str.append( "<br><b>Number of covariates</b>  " + QString::number(nbColumns-1));
+            for( int c = 1; c < nbColumns; ++c )
             {
-                str.append( "<br><b>Number of test subjects</b>  " + QString::number(nbRows-1) + "<br>" );
-                str.append( "<br><b>Data matrix</b>  " + QString::number(nbRows-1) + "x" + QString::number(nbColumns-1) + "<br>");
-                str.append( "<br><b>Number of COMP</b>  " + QString::number(nbColumns-1));
-                for( int c = 1; c < nbColumns; ++c )
-                {
-                    QString cov = ui->data_tableWidget->item( 0, c )->text();
-                    str.append( "<br>-  " + cov);
-                    covariates.append(cov);
-                }
-                covariates.push_front("Intercept");
+                QString cov = ui->data_tableWidget->item( 0, c )->text();
+                str.append( "<br>-  " + cov);
+                covariates.append(cov);
             }
-            else
+            covariates.push_front("Intercept");
+        }
+        else
+        {
+            if ( checkPrefix == "ad" || checkPrefix == "rd" || checkPrefix == "md" || checkPrefix == "fa" )
             {
-                if ( prefix == "ad" || prefix == "rd" || prefix == "md" || prefix == "fa" )
-                {
-                    str.append( "<br><b>Number of subjects</b>  " + QString::number(nbColumns-1) + "<br>" );
-                    str.append( "<br><b>Data matrix</b>  " + QString::number(nbRows) + "x" + QString::number(nbColumns-1));
-                }
+                str.append( "<br><b>Number of subjects</b>  " + QString::number(nbColumns-1) + "<br>" );
+                str.append( "<br><b>Data matrix</b>  " + QString::number(nbRows-1) + "x" + QString::number(nbColumns));
             }
         }
     }

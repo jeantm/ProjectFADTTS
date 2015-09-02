@@ -28,32 +28,32 @@ public:
     void displayInfo();
     
 private slots:
-    void filenameListValue(const QStringList &newFilenameList);
+    void filenameListValue(const QMap<QString, QString> &newFilenameList);
 
     void fileCOMPListValue(const QStringList &newFileCOMPList);
 
-    void fileNbrRowsListValue(const QList<int> &newFileNbrRowsList);
+    void fileNbrRowsListValue(const QMap<QString,int> &newFileNbrRowsList);
 
-    void fileNbrColumnsListValue(const QList<int> &newFileNbrColumnsList);
+    void fileNbrColumnsListValue(const QMap<QString,int> &newFileNbrColumnsList);
 
-    void fileNbrSubjectsListValue(const QList<int> &newFileNbrSubjectsList);
+    void fileNbrSubjectsListValue(const QMap<QString, int> &newFileNbrSubjectsList);
 
 
 private:
     Ui::Info *ui;
 
-    QStringList filenameList;
+    QMap<QString, QString> filenameList;
 
     QStringList fileCOMPList;
 
-    QList<int> fileNbrRowsList;
+    QMap<QString,int> fileNbrRowsList;
 
-    QList<int> fileNbrColumnsList;
+    QMap<QString,int> fileNbrColumnsList;
 
-    QList<int> fileNbrSubjectsList;
+    QMap<QString,int> fileNbrSubjectsList;
 
 
-    QString getFileInfo(int i, QString p);
+    QString getFileInfo(QString p);
 };
 
 #endif // INFO_H

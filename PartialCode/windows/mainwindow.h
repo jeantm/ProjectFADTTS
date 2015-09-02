@@ -9,7 +9,6 @@
 #include <QTextCharFormat>
 #include "setinput.h"
 #include "info.h"
-#include "subjectslist.h"
 
 
 namespace Ui {
@@ -34,31 +33,27 @@ signals:
 
     void filePathInputChanged(const QString&);
 
-    void filePathSubjectsChanged(const QString&);
-
     void defaultInputPathMainWindowChanged(const QString&);
 
-    void defaultInputPathSubjectsChanged(const QString&);
 
     // To Info
     void filesInfoChanged(const QStringList&);
 
-    void filenameListChanged(const QStringList&);
+    void filenameListChanged(const QMap<QString,QString>&);
 
     void fileCOMPListChanged(const QStringList&);
 
-    void fileNbrRowsListChanged(const QList<int>&);
+    void fileNbrRowsListChanged(const QMap<QString,int>&);
 
-    void fileNbrColumnsListChanged(const QList<int>&);
+    void fileNbrColumnsListChanged(const QMap<QString,int>&);
 
-    void fileNbrSubjectsListChanged(const QList<int>&);
+    void fileNbrSubjectsListChanged(const QMap<QString,int>&);
 
-    /*************** Subjects Tab ***************/
-
-    void fileDataSizeChanged(const QList<int>&, const QList<int>&);
 
     // To SubjectsList
     void defaultSubjectsListPathMainWindowChanged(const QString&);
+
+    void fileDataSizeChanged(const QMap<QString,int>&, const QMap<QString,int>&);
 
 
 private slots:
@@ -106,13 +101,26 @@ private slots:
     /*************** Subjects Tab ***************/
     void fileDataSizeValue();
 
-    void on_edit_inputSubjectList_lineEdit_clicked();
+    void on_load_inputSubjectList_PushButton_clicked();
 
-    void on_inputSubjectList_lineEdit_clicked();
+    void on_save_checkedSubjectsList_pushButton_clicked();
 
     void on_para_inputSubjectList_lineEdit_textChanged();
 
-    void on_create_subjectsListFrom_pushButton_clicked();
+    void on_match_subjectsList_pushButton_clicked();
+
+    void on_para_search_lineEdit_textEdited();
+
+
+    /************** Parameters  Tab **************/
+    void setCOMPList();
+
+    void on_covariatesCheckAll_pushButton_clicked();
+
+    void on_covariatesUncheckAll_pushButton_clicked();
+
+
+
 
 private:
     Ui::MainWindow *mainUi;
@@ -121,52 +129,46 @@ private:
 
     Info *info;
 
-    SubjectsList *subjectsListDialog;
+    QListWidget *matchedSubjectsListWidget, *covariatesListWidget;
 
-    QStringList filenameList;
+    typedef QMap<QString, QLabel*> LabelMapType;
+    LabelMapType dataSizeLabelMap;
+
+    typedef QMap<QString, QCheckBox*> checkBoxMapType;
+    checkBoxMapType fileCheckBoxMap;
+
+    QMap<QString, QStringList> filesSubjectsList;
+
+    QMap<QString, QString> filenameList;
+
+    QMap<QString, int> fileNbrRowsList, fileNbrColumnsList,fileNbrSubjectsList;
 
     QStringList fileCOMPList;
 
-    QList<int> fileNbrRowsList;
+    QString defaultInputPathMainWindow, defaultOutputPathMainWindow, defaultInputPathSubjectsList;
 
-    QList<int> fileNbrColumnsList;
 
-    QList<int> fileNbrSubjectsList;
 
-    typedef QMap<int, QLabel*> FileDataMapType;
-    QMap<int, QString> fileDataMap;
 
-    typedef QMap<int, QLabel*> FileRowDataMapType;
-    QMap<int, QString> fileRowDataMap;
+    /***************** Other *****************/
+    void init();
 
 
     /*************** Input Tab ***************/
-    QString defaultInputPathMainWindow, defaultOutputPathMainWindow;
-
-    void init();
-
-    void updateLineEdit(QLineEdit* & lineEdit, QPushButton *&pushButton, int i);
-
-    void updateFile(QString filePath, QString p, int i);
-
-    QString getPrefixPushButton(QPushButton* & pushButton);
-
     void addFiles(QStringList files);
 
-    void addFile(QLineEdit* & lineEdit, QPushButton* & pushButton);
+    void addFile(QLineEdit* & lineEdit);
 
     void editFile(QLineEdit* & lineEdit, QPushButton* & pushButton);
 
+    void updateLineEdit(QLineEdit* & lineEdit, QPushButton *&pushButton);
+
+    void updateFile(QString filePath, QString p);
+
+    QString getPrefixPushButton(QPushButton* & pushButton);
+
 
     /*************** Subjects Tab ***************/
-    QString defaultInputPathSubjectsList;
-
-    typedef QMap<int, QLabel*> DataSizeLabelMapType;
-    DataSizeLabelMapType dataSizeLabelMap;
-
-    typedef QMap<int, QCheckBox*> FileCheckBoxMapType;
-    FileCheckBoxMapType fileCheckBoxMap;
-
 };
 
 #endif // MAINWINDOW_H
