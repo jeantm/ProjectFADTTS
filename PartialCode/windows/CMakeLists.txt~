@@ -1,0 +1,46 @@
+cmake_minimum_required(VERSION 2.8)
+cmake_policy(VERSION 2.8)
+
+project(FADTTS)
+
+option(BUILD_TESTING "tests executable" OFF)
+
+#include(ExternalData)
+
+find_package(Qt4 COMPONENTS QtCore QtGui REQUIRED)
+include(${QT_USE_FILE})
+
+find_package(QtToCppXML REQUIRED)
+include(${QtToCppXML_USE_FILE})
+
+set(srcfiles
+main.cpp
+MainWindow.cpp
+EditInputDialog.cpp
+InfoDialog.cpp
+)
+
+QT4_WRAP_CPP(QtProject_HEADERS_MOC MainWindow.h EditInputDialog.h InfoDialog.h)
+QT4_WRAP_UI(UI_FILES MainWindow.ui EditInputDialog.ui InfoDialog.ui)
+
+list( APPEND
+srcfiles
+${QtProject_HEADERS_MOC}
+${UI_FILES}
+)
+
+QtToCppXML( SOURCES srcfiles NAME FADTTS UIXML_FILE MainWindow.ui EditInputDialog.ui InfoDialog.ui PREFIXES soft_ para_ )
+
+SEMMacroBuildCLI(
+NAME FADTTS
+EXECUTABLE_ONLY
+ADDITIONAL_SRCS ${srcfiles}
+TARGET_LIBRARIES ${QT_LIBRARIES}
+LINK_DIRECTORIES ${QT_LIBRARY_DIRS}
+INCLUDE_DIRECTORIES ${QT_INCLUDE_DIR}
+)
+
+if (BUILD_TESTING)
+  include(CTest)
+  add_subdirectory(Testing)
+endif ()

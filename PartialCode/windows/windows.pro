@@ -13,16 +13,18 @@ TEMPLATE = app
 
 
 SOURCES += main.cpp\
-        mainwindow.cpp \
-    setinput.cpp \
-    info.cpp
+    EditInputDialog.cpp \
+    InfoDialog.cpp \
+    MainWindow.cpp \
+    InputFile.cpp
 
-HEADERS  += mainwindow.h \
-    setinput.h \
-    info.h \
-    file.h
+HEADERS  += \
+    EditInputDialog.h \
+    InfoDialog.h \
+    MainWindow.h \
+    InputFile.h
 
-FORMS    += mainwindow.ui \
-    setinput.ui \
-    info.ui \
-    subjectslist.ui
+FORMS    += \
+    EditInputDialog.ui \
+    InfoDialog.ui \
+    MainWindow.ui
