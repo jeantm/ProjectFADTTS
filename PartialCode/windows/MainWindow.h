@@ -4,6 +4,7 @@
 #include <QMainWindow>
 #include "EditInputDialog.h"
 #include "InfoDialog.h"
+#include "InputFile.h"
 
 
 namespace Ui {
@@ -96,21 +97,6 @@ private:
     typedef QMap<QString, QPushButton*> pushButtonMapType;
     pushButtonMapType m_inputTabAddFilePushButtonMap, m_inputTabEditFilePushButtonMap;
 
-    QMap<QString, QStringList> m_filesSubjectsMap;
-
-    QMap<QString, QString> m_filenameMap;
-
-    QMap<QString, int> m_fileNbrRowsMap, m_fileNbrColumnsMap, m_fileNbrSubjectsMap;
-
-    QStringList m_covariatesList, m_filePrefixList;
-
-    QString m_csvSeparator,
-    m_axialDiffusivityFilePrefix, m_radialDiffusivityFilePrefix,
-    m_meanDiffusivityFilePrefix, m_fractionalAnisotropyPrefix, m_covariatesFilePrefix,
-    m_currentFileInputDir, m_currentFileOutputDir, m_currentSubjectsListInputDir, m_currentSaveFileDir;
-
-    int m_subjectColumnId, m_IconSize;
-
     QPixmap m_okPixmap;
     QPixmap m_koPixmap;
     QPixmap m_warningPixmap;
@@ -118,10 +104,21 @@ private:
     QColor m_green;
     QColor m_red;
     QColor m_grey;
-    QColor m_yellow;\
+    QColor m_yellow;
     QColor m_lightBlack;
 
     Qt::CaseSensitivity caseSensitivity;
+
+    InputFile m_inputFile;
+
+    int m_IconSize;
+
+    int m_subjectColumnId;
+
+    QString m_csvSeparator,
+    m_axialDiffusivityFilePrefix, m_radialDiffusivityFilePrefix,
+    m_meanDiffusivityFilePrefix, m_fractionalAnisotropyFilePrefix, m_covariatesFilePrefix,
+    m_currentFileInputDir, m_currentFileOutputDir, m_currentSubjectsListInputDir, m_currentSaveFileDir;
 
 
     /***************** Other *****************/
@@ -153,9 +150,9 @@ private:
 
     bool IsMatrixDimensionOK( const QList<QStringList> data );
 
-    void ClearFileInformation( const QString prefID );
-
     void SetIcon( const QString prefID , const QPixmap icon );
+
+    void SetWarningSubjectsColumnID();
 
     void LaunchEditInputWindow( QString prefID );
 
