@@ -3,6 +3,7 @@
 
 #include <QtCore>
 #include <QtGui>
+#include "Data.h"
 
 
 namespace Ui {
@@ -18,39 +19,18 @@ public:
     explicit InfoDialog( QWidget *parent = 0 );
     ~InfoDialog();
     
-    void DisplayInfo( const QStringList pefixList );
+    void DisplayInfo();
 
-    void ChangeFilePrefixListValue( const QStringList &newFilePrefixList );
-
-    void ChangeFilenameMapValue( const QMap<QString, QString> &newFilenameMap );
-
-    void ChangeCovariatesListValue( const QStringList &newCovariatesList );
-
-    void ChangeFileNbrRowsMapValue( const QMap<QString,int> &newFileNbrRowsMap );
-
-    void ChangeFileNbrColumnsMapValue( const QMap<QString,int> &newFileNbrColumnsMap );
-
-    void ChangeFileNbrSubjectsMapValue( const QMap<QString, int> &newFileNbrSubjectsMap );
+    void ChangeDataValue(const Data& newData );
 
 
 private:
     Ui::InfoDialog *m_ui;
 
-    QMap<QString, QString> m_filenameMap;
-
-    QMap<QString,int> m_fileNbrRowsMap;
-
-    QMap<QString,int> m_fileNbrColumnsMap;
-
-    QMap<QString,int> m_fileNbrSubjectsMap;
-
     typedef QMap<QString, QLabel*> labelMapType;
     labelMapType m_fileInfoLabelMap;
 
-    QStringList m_covariatesList, m_filePrefix;
-
-    QString m_axialDiffusivityFilePrefixe, m_radialDiffusivityFilePrefixe,
-    m_meanDiffusivityFilePrefixe, m_fractionalAnisotropyPrefixe, m_covariatesFilePrefixe;
+    Data m_data;
 
 
     QString GetFileInfo( const QString p );

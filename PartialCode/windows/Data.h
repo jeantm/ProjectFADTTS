@@ -1,22 +1,26 @@
-#ifndef INPUTFILE_H
-#define INPUTFILE_H
+#ifndef DATA_H
+#define DATA_H
 
 #include <QObject>
 #include <QStringList>
 #include <QMap>
-#include <QLocale>
 
-class InputFile : public QObject
+class Data : public QObject
 {
     Q_OBJECT
 
 public:
 
-    explicit InputFile(QObject *parent = 0);
+    explicit Data(QObject *parent = 0);
+
 
     /***************************************/
     /*************** Getters ***************/
     /***************************************/
+    QString GetOutputDir() const;
+
+    QStringList GetFilePrefixList() const;
+
     QString GetAxialDiffusivityFilePrefix() const;
 
     QString GetRadialDiffusivityFilePrefix() const;
@@ -26,17 +30,6 @@ public:
     QString GetFractionalAnisotropyFilePrefix() const;
 
     QString GetCovariatesFilePrefix() const;
-
-    QStringList GetFilePrefixList() const;
-
-
-    QString GetCurrentFileInputDir() const;
-
-    QString GetCurrentFileOutputDir() const;
-
-    QString GetCurrentSubjectsListInputDir() const;
-
-    QString GetCurrentSaveFileDir() const;
 
 
     QMap<QString, QString> GetFilenameMap() const;
@@ -49,20 +42,18 @@ public:
 
     QMap<QString, int> GetFileNbrSubjectsMap() const;
 
-    QString GetFilenameMap( QString pref ) const;
+    QString GetFilename( QString pref ) const;
 
-    QStringList GetFilesSubjectsMap( QString pref ) const;
+    QStringList GetFilesSubjects( QString pref ) const;
 
-    int GetFileNbrRowsMap( QString pref ) const;
+    int GetFileNbrRows( QString pref ) const;
 
-    int GetFileNbrColumnsMap( QString pref ) const;
+    int GetFileNbrColumns( QString pref ) const;
 
-    int GetFileNbrSubjectsMap( QString pref ) const;
+    int GetFileNbrSubjects( QString pref ) const;
 
     QStringList GetCovariatesList() const;
 
-
-    QString GetCSVSeparator() const;
 
     int GetSubjectColumnId() const;
 
@@ -72,32 +63,31 @@ public:
     /***************************************/
     /*************** Setters ***************/
     /***************************************/
-    QString& SetCurrentFileInputDir();
+    QString& SetOutputDir();
 
-    QString& SetCurrentSubjectsListInputDir();
+    QString& SetFilename( QString pref );
 
+    QStringList& SetFilesSubjects( QString pref );
 
-    QString& SetFilenameMap( QString pref );
+    int& SetFileNbrRows( QString pref );
 
-    QStringList& SetFilesSubjectsMap( QString pref );
+    int& SetFileNbrColumns( QString pref );
 
-    int& SetFileNbrRowsMap( QString pref );
-
-    int& SetFileNbrColumnsMap( QString pref );
-
-    int& SetFileNbrSubjectsMap( QString pref );
+    int& SetFileNbrSubjects( QString pref );
 
     QStringList& SetCovariatesList( );
 
 
-    void SetSubjectColumnId( int id );
+    QString& SetCovariatesFilePrefix();
 
-    void SetCurrentFileOutputDir( QString CurrentFileOutputDir );
+    void SetSubjectColumnId( int id );
 
 
     /***************************************/
     /************** Functions **************/
     /***************************************/
+    void UpdateData( const Data& newData );
+
     void InitFileInformation();
 
     void AddFileSubject( QString prefID, QString subjectID );
@@ -115,13 +105,11 @@ public:
 
 private:
 
-//    int m_subjectColumnId;
+    int m_subjectColumnId;
 
-    QString m_covariatesFilePrefix;
-//    QString m_csvSeparator,
-//    m_axialDiffusivityFilePrefix, m_radialDiffusivityFilePrefix,
-//    m_meanDiffusivityFilePrefix, m_fractionalAnisotropyFilePrefix, m_covariatesFilePrefix,
-//    m_currentFileInputDir, m_currentFileOutputDir, m_currentSubjectsListInputDir, m_currentSaveFileDir;
+    QString m_outputDir,
+    m_axialDiffusivityFilePrefix, m_radialDiffusivityFilePrefix,
+    m_meanDiffusivityFilePrefix, m_fractionalAnisotropyFilePrefix, m_covariatesFilePrefix;
 
     QStringList m_covariatesList, m_filePrefixList;
 
@@ -132,4 +120,4 @@ private:
     QMap<QString, int> m_fileNbrRowsMap, m_fileNbrColumnsMap, m_fileNbrSubjectsMap;
 };
 
-#endif // INPUTFILE_H
+#endif // DATA_H

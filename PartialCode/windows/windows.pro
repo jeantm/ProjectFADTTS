@@ -16,13 +16,15 @@ SOURCES += main.cpp\
     EditInputDialog.cpp \
     InfoDialog.cpp \
     MainWindow.cpp \
-    InputFile.cpp
+    Processing.cpp \
+    Data.cpp
 
 HEADERS  += \
     EditInputDialog.h \
     InfoDialog.h \
     MainWindow.h \
-    InputFile.h
+    Processing.h \
+    Data.h
 
 FORMS    += \
     EditInputDialog.ui \

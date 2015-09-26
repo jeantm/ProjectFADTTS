@@ -6,7 +6,6 @@ InfoDialog::InfoDialog( QWidget *parent ) :
     m_ui( new Ui::InfoDialog )
 {
     m_ui->setupUi( this );
-
 }
 
 InfoDialog::~InfoDialog()
@@ -19,54 +18,23 @@ InfoDialog::~InfoDialog()
 /***************************************************************/
 /********************** Public functions ***********************/
 /***************************************************************/
-void InfoDialog::DisplayInfo( const QStringList pefixList )
+void InfoDialog::DisplayInfo()
 {
+    qDebug() << "Test1";
     SetInfoFileLabelMap();
-
-    foreach( QString prefix, pefixList )
+    qDebug() << "Test2";
+    foreach( QString prefix, m_data.GetFilePrefixList() )
     {
-        m_fileInfoLabelMap.value( prefix )->setText( GetFileInfo( prefix ) );
+        m_fileInfoLabelMap.value( prefix )->setText( tr( qPrintable( "<center><b>" + prefix.toUpper() + " File</b></center><br>" + GetFileInfo( prefix ) ) ) );
     }
 }
 
-void InfoDialog::ChangeFilePrefixListValue( const QStringList &newFilePrefixList )
+void InfoDialog::ChangeDataValue( const Data& newData )
 {
-    m_filePrefix = newFilePrefixList;
-    qDebug() << "Info update filePrefixList: " << m_filePrefix;
+    m_data.UpdateData( newData );
 
-    SetFilePrefix();
+//    qDebug() << m_data.m_axialDiffusivityFilePrefix;
 }
-
-void InfoDialog::ChangeFilenameMapValue( const QMap<QString,QString> &newFilenameMap )
-{
-    m_filenameMap = newFilenameMap;
-    qDebug() << "Info update filenameMap: " << m_filenameMap;
-}
-
-void InfoDialog::ChangeCovariatesListValue( const QStringList &newCovariatesList )
-{
-    m_covariatesList = newCovariatesList;
-    qDebug() << "Info update covariatesList: " << m_covariatesList;
-}
-
-void InfoDialog::ChangeFileNbrRowsMapValue( const QMap<QString,int> &newFileNbrRowsMap )
-{
-    m_fileNbrRowsMap = newFileNbrRowsMap;
-    qDebug() << "Info update fileNbrRowsMap: " << m_fileNbrRowsMap;
-}
-
-void InfoDialog::ChangeFileNbrColumnsMapValue( const QMap<QString,int> &newFileNbrColumnsMap )
-{
-    m_fileNbrColumnsMap = newFileNbrColumnsMap;
-    qDebug() << "Info update fileNbrColumnsMap: " << m_fileNbrColumnsMap;
-}
-
-void InfoDialog::ChangeFileNbrSubjectsMapValue( const QMap<QString,int> &newFileNbrSubjectsMap )
-{
-    m_fileNbrSubjectsMap = newFileNbrSubjectsMap;
-    qDebug() << "Info update fileNbrSubjectsMap: " << m_fileNbrSubjectsMap;
-}
-
 
 /***************************************************************/
 /************************ Private slots ************************/
@@ -78,53 +46,45 @@ void InfoDialog::ChangeFileNbrSubjectsMapValue( const QMap<QString,int> &newFile
 QString InfoDialog::GetFileInfo( const QString p )
 {
     QString str;
-    str.append( tr ( "<center><b>No File Information</b></center><br><b>Please select a correct data file</b><br>" ) );
-    const QString filename = m_filenameMap[p];
+    str.append( tr ( "<i>No File Information.<br>Please select a correct data file</i>" ) );
+    const QString filename = m_data.GetFilename( p );
     QFile file( filename );
 
     if( file.open( QIODevice::ReadOnly ) )
     {
-        int nbRows = m_fileNbrRowsMap[p];
-        int nbColumns = m_fileNbrColumnsMap[p];
+        int nbRows = m_data.GetFileNbrRows( p );
+        int nbColumns = m_data.GetFileNbrColumns( p );
 
         str.clear();
         str.append( tr( qPrintable( "<b>Filename</b> " + QFileInfo( QFile( filename ) ).fileName() + "<br>" ) ) );
-        if( p == m_covariatesFilePrefixe )
+        if( p == m_data.GetCovariatesFilePrefix() )
         {
-            str.append( tr( qPrintable( "<b>Number of test subjects</b>  " + QString::number( m_fileNbrSubjectsMap[p] ) + "<br>" ) ) );
+            str.append( tr( qPrintable( "<b>Number of test subjects</b>  " + QString::number( m_data.GetFileNbrSubjects( p ) ) + "<br>" ) ) );
             str.append( tr( qPrintable( "<b>Data matrix</b>  " + QString::number( nbRows ) + "x" + QString::number( nbColumns ) + "<br>" ) ) );
-            str.append( tr( qPrintable( "<b>Number of COMP</b>  " + QString::number( m_covariatesList.size()-1 ) ) ) );
-            for( int c = 1; c < m_covariatesList.size(); ++c )
+            str.append( tr( qPrintable( "<b>Number of COMP</b>  " + QString::number( m_data.GetCovariatesList().size()-1 ) ) ) );
+            for( int c = 1; c < m_data.GetCovariatesList().size(); ++c )
             {
-                str.append( tr( qPrintable( "<br>-  " + m_covariatesList.at( c ) ) ) );
+                str.append( tr( qPrintable( "<br>-  " + m_data.GetCovariatesList().at( c ) ) ) );
             }
         }
         else
         {
-            if( m_filePrefix.contains( p ) )
+            if( m_data.GetFilePrefixList().contains( p ) )
             {
-                str.append( tr( qPrintable( "<b>Number of subjects</b>  " + QString::number( m_fileNbrSubjectsMap[p] ) + "<br>" ) ) );
-                str.append( tr( qPrintable( "<b>Data matrix</b>  " + QString::number( nbRows-1 ) + "x" + QString::number( nbColumns ) ) ) );
+                str.append( tr( qPrintable( "<b>Number of subjects</b>  " + QString::number( m_data.GetFileNbrSubjects( p ) ) + "<br>" ) ) );
+                str.append( tr( qPrintable( "<b>Data matrix</b>  " + QString::number( nbRows ) + "x" + QString::number( nbColumns ) ) ) );
             }
         }
     }
     return str;
 }
 
-void InfoDialog::SetFilePrefix()
-{
-    m_axialDiffusivityFilePrefixe = m_filePrefix.at( 0 );
-    m_radialDiffusivityFilePrefixe = m_filePrefix.at( 1 );
-    m_meanDiffusivityFilePrefixe = m_filePrefix.at( 2 );
-    m_fractionalAnisotropyPrefixe = m_filePrefix.at( 3 );
-    m_covariatesFilePrefixe = m_filePrefix.at( 4 );
-}
 
 void InfoDialog::SetInfoFileLabelMap()
 {
-    m_fileInfoLabelMap.insert( m_axialDiffusivityFilePrefixe, m_ui->adFileInfo_label );
-    m_fileInfoLabelMap.insert( m_radialDiffusivityFilePrefixe, m_ui->rdFileInfo_label );
-    m_fileInfoLabelMap.insert( m_meanDiffusivityFilePrefixe, m_ui->mdFileInfo_label );
-    m_fileInfoLabelMap.insert( m_fractionalAnisotropyPrefixe, m_ui->faFileInfo_label );
-    m_fileInfoLabelMap.insert( m_covariatesFilePrefixe, m_ui->compFileInfo_label );
+    m_fileInfoLabelMap.insert( m_data.GetAxialDiffusivityFilePrefix(), m_ui->adFileInfo_label );
+    m_fileInfoLabelMap.insert( m_data.GetRadialDiffusivityFilePrefix(), m_ui->rdFileInfo_label );
+    m_fileInfoLabelMap.insert( m_data.GetMeanDiffusivityFilePrefix(), m_ui->mdFileInfo_label );
+    m_fileInfoLabelMap.insert( m_data.GetFractionalAnisotropyFilePrefix(), m_ui->faFileInfo_label );
+    m_fileInfoLabelMap.insert( m_data.GetCovariatesFilePrefix(), m_ui->compFileInfo_label );
 }

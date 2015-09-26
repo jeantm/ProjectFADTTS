@@ -1,6 +1,7 @@
 #include "EditInputDialog.h"
 #include "ui_EditInputDialog.h"
 
+const QString EditInputDialog::m_csvSeparator = QLocale().groupSeparator();
 
 EditInputDialog::EditInputDialog( QWidget *parent ) :
     QDialog( parent ),
@@ -41,11 +42,6 @@ void EditInputDialog::ChangeFilePathInputValue( const QString &newFilePathInput 
 {
     m_filePathInput = newFilePathInput;
     m_filename = QFileInfo( QFile( m_filePathInput ) ).fileName();
-}
-
-void EditInputDialog::SetcsvSeparator( const QString &csvSeparator )
-{
-    m_csvSeparator = csvSeparator;
 }
 
 void EditInputDialog::ChangeCurrentFileInputDirValue( const QString &newCurrentInputPathMainWindow )

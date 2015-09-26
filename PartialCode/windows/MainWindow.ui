@@ -9,7 +9,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>939</width>
+    <width>940</width>
     <height>467</height>
    </rect>
   </property>
@@ -87,7 +87,7 @@
         <item row="0" column="0" colspan="2">
          <widget class="QWidget" name="input_paths_widget" native="true">
           <property name="sizePolicy">
-           <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+           <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
             <horstretch>0</horstretch>
             <verstretch>0</verstretch>
            </sizepolicy>
@@ -158,7 +158,7 @@
                 </property>
                </widget>
               </item>
-              <item row="5" column="5">
+              <item row="5" column="6">
                <widget class="QPushButton" name="editInputFAfile_pushButton">
                 <property name="sizePolicy">
                  <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
@@ -171,7 +171,39 @@
                 </property>
                </widget>
               </item>
-              <item row="3" column="5">
+              <item row="7" column="6" colspan="2">
+               <widget class="QPushButton" name="editInputCOMPfile_pushButton">
+                <property name="sizePolicy">
+                 <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                  <horstretch>0</horstretch>
+                  <verstretch>0</verstretch>
+                 </sizepolicy>
+                </property>
+                <property name="text">
+                 <string>Edit</string>
+                </property>
+               </widget>
+              </item>
+              <item row="7" column="5">
+               <widget class="QLabel" name="subjectColumnId_label">
+                <property name="sizePolicy">
+                 <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                  <horstretch>0</horstretch>
+                  <verstretch>0</verstretch>
+                 </sizepolicy>
+                </property>
+                <property name="minimumSize">
+                 <size>
+                  <width>20</width>
+                  <height>0</height>
+                 </size>
+                </property>
+                <property name="text">
+                 <string/>
+                </property>
+               </widget>
+              </item>
+              <item row="3" column="6">
                <widget class="QPushButton" name="editInputRDfile_pushButton">
                 <property name="sizePolicy">
                  <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
@@ -187,7 +219,7 @@
               <item row="7" column="1" colspan="3">
                <widget class="QLineEdit" name="para_inputCOMPfile_lineEdit"/>
               </item>
-              <item row="1" column="5">
+              <item row="1" column="6">
                <widget class="QPushButton" name="editInputADfile_pushButton">
                 <property name="sizePolicy">
                  <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
@@ -197,25 +229,6 @@
                 </property>
                 <property name="text">
                  <string>Edit</string>
-                </property>
-               </widget>
-              </item>
-              <item row="8" column="1">
-               <widget class="QLabel" name="subjectColumnId_label">
-                <property name="sizePolicy">
-                 <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-                  <horstretch>0</horstretch>
-                  <verstretch>0</verstretch>
-                 </sizepolicy>
-                </property>
-                <property name="minimumSize">
-                 <size>
-                  <width>27</width>
-                  <height>27</height>
-                 </size>
-                </property>
-                <property name="text">
-                 <string/>
                 </property>
                </widget>
               </item>
@@ -301,19 +314,6 @@
                 </property>
                </widget>
               </item>
-              <item row="10" column="5">
-               <widget class="QPushButton" name="inputInfo_pushButton">
-                <property name="sizePolicy">
-                 <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-                  <horstretch>0</horstretch>
-                  <verstretch>0</verstretch>
-                 </sizepolicy>
-                </property>
-                <property name="text">
-                 <string>Get Info Inputs</string>
-                </property>
-               </widget>
-              </item>
               <item row="0" column="0">
                <widget class="QPushButton" name="inputAddDataFiles_pushButton">
                 <property name="sizePolicy">
@@ -355,13 +355,6 @@
                 </property>
                </widget>
               </item>
-              <item row="10" column="0" colspan="3">
-               <widget class="QLabel" name="prefixMeaning_label">
-                <property name="text">
-                 <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:8pt; font-style:italic;&quot;&gt;AD = Axial Diffusivity, RD = Radial Diffusivity, MD = Mean Diffusivity, FA = Fractional anisotropy&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-                </property>
-               </widget>
-              </item>
               <item row="5" column="4">
                <widget class="QLabel" name="iconInputFAFile_label">
                 <property name="sizePolicy">
@@ -381,7 +374,7 @@
                 </property>
                </widget>
               </item>
-              <item row="4" column="5">
+              <item row="4" column="6">
                <widget class="QPushButton" name="editInputMDfile_pushButton">
                 <property name="sizePolicy">
                  <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
@@ -421,8 +414,27 @@
               </item>
               <item row="0" column="1" colspan="2">
                <widget class="QLabel" name="addDataFilesInfo_label">
+                <property name="sizePolicy">
+                 <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+                  <horstretch>0</horstretch>
+                  <verstretch>0</verstretch>
+                 </sizepolicy>
+                </property>
                 <property name="text">
-                 <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt;To add several files at the same time, click on '&lt;/span&gt;&lt;span style=&quot; font-size:8pt; font-style:italic;&quot;&gt;Add Data Files&lt;/span&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt;' and then select them.&lt;br&gt;The files must start with ad_, rd_, md_, fa_, or COMP_ prefix.&lt;br/&gt;If a prefix appears more than once in the selection, linked files wiil be ignored.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                 <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt;To add several files at the same time, click on '&lt;/span&gt;&lt;span style=&quot; font-size:8pt; font-style:italic;&quot;&gt;Add Data Files&lt;/span&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt;' and then select them.&lt;br&gt;The files must start with ad_, rd_, md_, fa_, or COMP_ prefix.&lt;br/&gt;If a prefix appears more than once in the selection, linked files will be ignored.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                </property>
+               </widget>
+              </item>
+              <item row="8" column="0" colspan="3">
+               <widget class="QLabel" name="prefixMeaning_label">
+                <property name="sizePolicy">
+                 <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+                  <horstretch>0</horstretch>
+                  <verstretch>0</verstretch>
+                 </sizepolicy>
+                </property>
+                <property name="text">
+                 <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:8pt; font-style:italic;&quot;&gt;AD = Axial Diffusivity, RD = Radial Diffusivity, MD = Mean Diffusivity, FA = Fractional anisotropy&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
                 </property>
                </widget>
               </item>
@@ -445,8 +457,8 @@
                 </property>
                </widget>
               </item>
-              <item row="7" column="5">
-               <widget class="QPushButton" name="editInputCOMPfile_pushButton">
+              <item row="9" column="0" colspan="2">
+               <widget class="QPushButton" name="inputInfo_pushButton">
                 <property name="sizePolicy">
                  <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
                   <horstretch>0</horstretch>
@@ -454,7 +466,7 @@
                  </sizepolicy>
                 </property>
                 <property name="text">
-                 <string>Edit</string>
+                 <string>Get Info Inputs</string>
                 </property>
                </widget>
               </item>
@@ -1231,7 +1243,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>939</width>
+     <width>940</width>
      <height>25</height>
     </rect>
    </property>

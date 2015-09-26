@@ -4,7 +4,8 @@
 #include <QMainWindow>
 #include "EditInputDialog.h"
 #include "InfoDialog.h"
-#include "InputFile.h"
+#include "Data.h"
+#include "Processing.h"
 
 
 namespace Ui {
@@ -68,7 +69,7 @@ private slots:
     void SortSubjects();
 
 
-    /************** Parameters  Tab **************/
+    /***************** Parameters  Tab *****************/
     void on_covariates_listWidget_itemClicked( QListWidgetItem *item );
 
     void on_covariatesCheckAll_pushButton_clicked();
@@ -76,7 +77,25 @@ private slots:
     void on_covariatesUncheckAll_pushButton_clicked();
 
 
+    /******************** Run  Tab ********************/
+    void on_run_pushButton_clicked();
+
+
 private:
+    static const QString m_csvSeparator;
+
+    static const QColor m_green;
+    static const QColor m_red;
+    static const QColor m_grey;
+    static const QColor m_yellow;
+    static const QColor m_lightBlack;
+
+    static const int m_IconSize;
+    static const QPixmap m_okPixmap;
+    static const QPixmap m_koPixmap;
+    static const QPixmap m_warningPixmap;
+
+
     Ui::MainWindow *m_mainUi;
 
     EditInputDialog *m_editInputDialog;
@@ -97,34 +116,17 @@ private:
     typedef QMap<QString, QPushButton*> pushButtonMapType;
     pushButtonMapType m_inputTabAddFilePushButtonMap, m_inputTabEditFilePushButtonMap;
 
-    QPixmap m_okPixmap;
-    QPixmap m_koPixmap;
-    QPixmap m_warningPixmap;
-
-    QColor m_green;
-    QColor m_red;
-    QColor m_grey;
-    QColor m_yellow;
-    QColor m_lightBlack;
-
     Qt::CaseSensitivity caseSensitivity;
 
-    InputFile m_inputFile;
+    QString m_currentFileInputDir, m_currentSubjectsListInputDir;
 
-    int m_IconSize;
+    Data m_data;
 
-    int m_subjectColumnId;
-
-    QString m_csvSeparator,
-    m_axialDiffusivityFilePrefix, m_radialDiffusivityFilePrefix,
-    m_meanDiffusivityFilePrefix, m_fractionalAnisotropyFilePrefix, m_covariatesFilePrefix,
-    m_currentFileInputDir, m_currentFileOutputDir, m_currentSubjectsListInputDir, m_currentSaveFileDir;
+    Processing m_processing;
 
 
     /***************** Other *****************/
     void Init();
-
-    void InitGeneral();
 
     void InitInputTab();
 
@@ -148,11 +150,11 @@ private:
 
     void UpdateFileInformation( const QString filePath, const QString prefID );
 
-    bool IsMatrixDimensionOK( const QList<QStringList> data );
+    bool IsMatrixDimensionOK( const QList<QStringList> data ); // Move
 
     void SetIcon( const QString prefID , const QPixmap icon );
 
-    void SetWarningSubjectsColumnID();
+    void SetInfoSubjectsColumnID();
 
     void LaunchEditInputWindow( QString prefID );
 
@@ -160,13 +162,13 @@ private:
     /*************** Subjects Tab ***************/
     void UpdateParamTab();
 
-    QStringList GetRefSubjectsList( QFile& refFile );
+    QStringList GetRefSubjectsList( QFile& refFile ); // Move
 
-    QMap<QString, QStringList> GetAllSubjects();
+    QMap<QString, QStringList> GetAllSubjects(); // Move
 
-    QMap< QString, QMap<QString, bool> > FindSubjectsInDataFile( const QStringList refList, const QMap<QString, QStringList> subjectsList );
+    QMap< QString, QMap<QString, bool> > FindSubjectsInDataFile( const QStringList refList, const QMap<QString, QStringList> subjectsList ); // Move
 
-    void AssignSortedSubjects( const QMap< QString, QMap<QString, bool> > checkedSubjects, QStringList& matchedSubjectsList, QMap<QString, QStringList >& unMatchedSubjectsList );
+    void AssignSortedSubjects( const QMap< QString, QMap<QString, bool> > checkedSubjects, QStringList& matchedSubjectsList, QMap<QString, QStringList >& unMatchedSubjectsList ); // Move
 
     void DisplayFinalSubjectList( const QStringList subjectsListRef, const QStringList matchedSubjectsList, const QMap<QString, QStringList > unMatchedSubjectsList );
 
@@ -177,8 +179,10 @@ private:
     void SetCovariatesList();
 
 
-    /*************** Test Functions ***************/
+    /*************** Run Tab ***************/
+    QString GenerateFinalSubjectsList();
 
+    QStringList GenerateFinalInputFiles();
 };
 
 #endif // MAINWINDOW_H

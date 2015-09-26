@@ -29,8 +29,6 @@ public:
 
     void ChangeCurrentFileInputDirValue( const QString &newCurrentInputPathMainWindow );
 
-    void SetcsvSeparator( const QString &csvSeparator );
-
     void ResetSubjectColumnId();
 
 
@@ -53,11 +51,13 @@ private slots:
 
 
 private:
+    static const QString m_csvSeparator;
+
     Ui::EditInputDialog *m_ui;
 
     QTableWidget *m_dataTableWidget;
 
-    QString m_prefixExpected, m_currentPathSetInput, m_filePathInput, m_filename, m_csvSeparator, m_covariatesFilePrefix;
+    QString m_prefixExpected, m_currentPathSetInput, m_filePathInput, m_filename, m_covariatesFilePrefix;
 
     QStringList m_covariates, m_filePrefixList;
 
